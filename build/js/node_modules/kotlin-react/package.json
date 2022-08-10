@@ -1,0 +1,11 @@
+{
+  "name": "kotlin-react",
+  "version": "18.0.0-pre.332-kotlin-1.6.21",
+  "customFields": {},
+  "main": "kotlin-react.js",
+  "devDependencies": {},
+  "dependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": []
+}
