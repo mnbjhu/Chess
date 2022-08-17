@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform") version "1.7.0"
+    kotlin("plugin.serialization") version "1.7.10"
     application
 }
 
@@ -9,7 +10,9 @@ version = "1.0-SNAPSHOT"
 repositories {
     jcenter()
     mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
+
+    maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
+    maven (url = "https://jitpack.io")
 }
 
 kotlin {
@@ -31,7 +34,11 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting{
+            dependencies{
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
@@ -39,6 +46,10 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
+                implementation("com.github.mnbjhu:KotlinRedisGraph:0.3.0")
+
+
+
                 implementation("io.ktor:ktor-server-netty:2.0.1")
                 implementation("io.ktor:ktor-server-html-builder-jvm:2.0.1")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
