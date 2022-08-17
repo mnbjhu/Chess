@@ -1185,22 +1185,6 @@
     IntRange.prototype.constructor = IntRange;
     LongRange.prototype = Object.create(LongProgression.prototype);
     LongRange.prototype.constructor = LongRange;
-    booleanArrayIterator$ObjectLiteral.prototype = Object.create(BooleanIterator.prototype);
-    booleanArrayIterator$ObjectLiteral.prototype.constructor = booleanArrayIterator$ObjectLiteral;
-    byteArrayIterator$ObjectLiteral.prototype = Object.create(ByteIterator.prototype);
-    byteArrayIterator$ObjectLiteral.prototype.constructor = byteArrayIterator$ObjectLiteral;
-    shortArrayIterator$ObjectLiteral.prototype = Object.create(ShortIterator.prototype);
-    shortArrayIterator$ObjectLiteral.prototype.constructor = shortArrayIterator$ObjectLiteral;
-    charArrayIterator$ObjectLiteral.prototype = Object.create(CharIterator.prototype);
-    charArrayIterator$ObjectLiteral.prototype.constructor = charArrayIterator$ObjectLiteral;
-    intArrayIterator$ObjectLiteral.prototype = Object.create(IntIterator.prototype);
-    intArrayIterator$ObjectLiteral.prototype.constructor = intArrayIterator$ObjectLiteral;
-    floatArrayIterator$ObjectLiteral.prototype = Object.create(FloatIterator.prototype);
-    floatArrayIterator$ObjectLiteral.prototype.constructor = floatArrayIterator$ObjectLiteral;
-    doubleArrayIterator$ObjectLiteral.prototype = Object.create(DoubleIterator.prototype);
-    doubleArrayIterator$ObjectLiteral.prototype.constructor = doubleArrayIterator$ObjectLiteral;
-    longArrayIterator$ObjectLiteral.prototype = Object.create(LongIterator.prototype);
-    longArrayIterator$ObjectLiteral.prototype.constructor = longArrayIterator$ObjectLiteral;
     Error_0.prototype = Object.create(Throwable.prototype);
     Error_0.prototype.constructor = Error_0;
     IllegalArgumentException.prototype = Object.create(RuntimeException.prototype);
@@ -1217,8 +1201,6 @@
     ClassCastException.prototype.constructor = ClassCastException;
     NoSuchElementException.prototype = Object.create(RuntimeException.prototype);
     NoSuchElementException.prototype.constructor = NoSuchElementException;
-    NoWhenBranchMatchedException.prototype = Object.create(RuntimeException.prototype);
-    NoWhenBranchMatchedException.prototype.constructor = NoWhenBranchMatchedException;
     AbstractMutableCollection.prototype = Object.create(AbstractCollection.prototype);
     AbstractMutableCollection.prototype.constructor = AbstractMutableCollection;
     AbstractMutableList$ListIteratorImpl.prototype = Object.create(AbstractMutableList$IteratorImpl.prototype);
@@ -1245,9 +1227,6 @@
     CoroutineSingletons.prototype.constructor = CoroutineSingletons;
     NotImplementedError.prototype = Object.create(Error_0.prototype);
     NotImplementedError.prototype.constructor = NotImplementedError;
-    function contains($receiver, element) {
-      return indexOf($receiver, element) >= 0;
-    }
     function indexOf($receiver, element) {
       if (element == null) {
         for (var index = 0; index !== $receiver.length; ++index) {
@@ -1388,24 +1367,12 @@
     function MutableListIterator() {
     }
     MutableListIterator.$metadata$ = {kind: Kind_INTERFACE, simpleName: 'MutableListIterator', interfaces: [MutableIterator, ListIterator]};
-    function ByteIterator() {
-    }
-    ByteIterator.prototype.next = function () {
-      return this.nextByte();
-    };
-    ByteIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'ByteIterator', interfaces: [Iterator]};
     function CharIterator() {
     }
     CharIterator.prototype.next = function () {
       return toBoxedChar(this.nextChar());
     };
     CharIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'CharIterator', interfaces: [Iterator]};
-    function ShortIterator() {
-    }
-    ShortIterator.prototype.next = function () {
-      return this.nextShort();
-    };
-    ShortIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'ShortIterator', interfaces: [Iterator]};
     function IntIterator() {
     }
     IntIterator.prototype.next = function () {
@@ -1418,24 +1385,6 @@
       return this.nextLong();
     };
     LongIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'LongIterator', interfaces: [Iterator]};
-    function FloatIterator() {
-    }
-    FloatIterator.prototype.next = function () {
-      return this.nextFloat();
-    };
-    FloatIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'FloatIterator', interfaces: [Iterator]};
-    function DoubleIterator() {
-    }
-    DoubleIterator.prototype.next = function () {
-      return this.nextDouble();
-    };
-    DoubleIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'DoubleIterator', interfaces: [Iterator]};
-    function BooleanIterator() {
-    }
-    BooleanIterator.prototype.next = function () {
-      return this.nextBoolean();
-    };
-    BooleanIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'BooleanIterator', interfaces: [Iterator]};
     function CharProgressionIterator(first, last, step) {
       CharIterator.call(this);
       this.step = step;
@@ -1807,202 +1756,6 @@
       else
         throw IllegalArgumentException_init_0('Step is zero.');
     }
-    function arrayIterator$ObjectLiteral(closure$arr) {
-      this.closure$arr = closure$arr;
-      this.index = 0;
-    }
-    arrayIterator$ObjectLiteral.prototype.hasNext = function () {
-      return this.index < this.closure$arr.length;
-    };
-    arrayIterator$ObjectLiteral.prototype.next = function () {
-      var tmp$;
-      if (this.index < this.closure$arr.length) {
-        return this.closure$arr[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
-      } else
-        throw new NoSuchElementException(this.index.toString());
-    };
-    arrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [Iterator]};
-    function arrayIterator(array, type) {
-      if (type == null) {
-        var arr = array;
-        return new arrayIterator$ObjectLiteral(arr);
-      } else
-        switch (type) {
-          case 'BooleanArray':
-            return booleanArrayIterator(array);
-          case 'ByteArray':
-            return byteArrayIterator(array);
-          case 'ShortArray':
-            return shortArrayIterator(array);
-          case 'CharArray':
-            return charArrayIterator(array);
-          case 'IntArray':
-            return intArrayIterator(array);
-          case 'LongArray':
-            return longArrayIterator(array);
-          case 'FloatArray':
-            return floatArrayIterator(array);
-          case 'DoubleArray':
-            return doubleArrayIterator(array);
-          default:
-            throw IllegalStateException_init_0('Unsupported type argument for arrayIterator: ' + toString(type));
-        }
-    }
-    function booleanArrayIterator$ObjectLiteral(closure$array) {
-      this.closure$array = closure$array;
-      BooleanIterator.call(this);
-      this.index = 0;
-    }
-    booleanArrayIterator$ObjectLiteral.prototype.hasNext = function () {
-      return this.index < this.closure$array.length;
-    };
-    booleanArrayIterator$ObjectLiteral.prototype.nextBoolean = function () {
-      var tmp$;
-      if (this.index < this.closure$array.length) {
-        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
-      } else
-        throw new NoSuchElementException(this.index.toString());
-    };
-    booleanArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [BooleanIterator]};
-    function booleanArrayIterator(array) {
-      return new booleanArrayIterator$ObjectLiteral(array);
-    }
-    function byteArrayIterator$ObjectLiteral(closure$array) {
-      this.closure$array = closure$array;
-      ByteIterator.call(this);
-      this.index = 0;
-    }
-    byteArrayIterator$ObjectLiteral.prototype.hasNext = function () {
-      return this.index < this.closure$array.length;
-    };
-    byteArrayIterator$ObjectLiteral.prototype.nextByte = function () {
-      var tmp$;
-      if (this.index < this.closure$array.length) {
-        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
-      } else
-        throw new NoSuchElementException(this.index.toString());
-    };
-    byteArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [ByteIterator]};
-    function byteArrayIterator(array) {
-      return new byteArrayIterator$ObjectLiteral(array);
-    }
-    function shortArrayIterator$ObjectLiteral(closure$array) {
-      this.closure$array = closure$array;
-      ShortIterator.call(this);
-      this.index = 0;
-    }
-    shortArrayIterator$ObjectLiteral.prototype.hasNext = function () {
-      return this.index < this.closure$array.length;
-    };
-    shortArrayIterator$ObjectLiteral.prototype.nextShort = function () {
-      var tmp$;
-      if (this.index < this.closure$array.length) {
-        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
-      } else
-        throw new NoSuchElementException(this.index.toString());
-    };
-    shortArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [ShortIterator]};
-    function shortArrayIterator(array) {
-      return new shortArrayIterator$ObjectLiteral(array);
-    }
-    function charArrayIterator$ObjectLiteral(closure$array) {
-      this.closure$array = closure$array;
-      CharIterator.call(this);
-      this.index = 0;
-    }
-    charArrayIterator$ObjectLiteral.prototype.hasNext = function () {
-      return this.index < this.closure$array.length;
-    };
-    charArrayIterator$ObjectLiteral.prototype.nextChar = function () {
-      var tmp$;
-      if (this.index < this.closure$array.length) {
-        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
-      } else
-        throw new NoSuchElementException(this.index.toString());
-    };
-    charArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [CharIterator]};
-    function charArrayIterator(array) {
-      return new charArrayIterator$ObjectLiteral(array);
-    }
-    function intArrayIterator$ObjectLiteral(closure$array) {
-      this.closure$array = closure$array;
-      IntIterator.call(this);
-      this.index = 0;
-    }
-    intArrayIterator$ObjectLiteral.prototype.hasNext = function () {
-      return this.index < this.closure$array.length;
-    };
-    intArrayIterator$ObjectLiteral.prototype.nextInt = function () {
-      var tmp$;
-      if (this.index < this.closure$array.length) {
-        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
-      } else
-        throw new NoSuchElementException(this.index.toString());
-    };
-    intArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [IntIterator]};
-    function intArrayIterator(array) {
-      return new intArrayIterator$ObjectLiteral(array);
-    }
-    function floatArrayIterator$ObjectLiteral(closure$array) {
-      this.closure$array = closure$array;
-      FloatIterator.call(this);
-      this.index = 0;
-    }
-    floatArrayIterator$ObjectLiteral.prototype.hasNext = function () {
-      return this.index < this.closure$array.length;
-    };
-    floatArrayIterator$ObjectLiteral.prototype.nextFloat = function () {
-      var tmp$;
-      if (this.index < this.closure$array.length) {
-        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
-      } else
-        throw new NoSuchElementException(this.index.toString());
-    };
-    floatArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [FloatIterator]};
-    function floatArrayIterator(array) {
-      return new floatArrayIterator$ObjectLiteral(array);
-    }
-    function doubleArrayIterator$ObjectLiteral(closure$array) {
-      this.closure$array = closure$array;
-      DoubleIterator.call(this);
-      this.index = 0;
-    }
-    doubleArrayIterator$ObjectLiteral.prototype.hasNext = function () {
-      return this.index < this.closure$array.length;
-    };
-    doubleArrayIterator$ObjectLiteral.prototype.nextDouble = function () {
-      var tmp$;
-      if (this.index < this.closure$array.length) {
-        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
-      } else
-        throw new NoSuchElementException(this.index.toString());
-    };
-    doubleArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [DoubleIterator]};
-    function doubleArrayIterator(array) {
-      return new doubleArrayIterator$ObjectLiteral(array);
-    }
-    function longArrayIterator$ObjectLiteral(closure$array) {
-      this.closure$array = closure$array;
-      LongIterator.call(this);
-      this.index = 0;
-    }
-    longArrayIterator$ObjectLiteral.prototype.hasNext = function () {
-      return this.index < this.closure$array.length;
-    };
-    longArrayIterator$ObjectLiteral.prototype.nextLong = function () {
-      var tmp$;
-      if (this.index < this.closure$array.length) {
-        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
-      } else
-        throw new NoSuchElementException(this.index.toString());
-    };
-    longArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [LongIterator]};
-    function longArrayIterator(array) {
-      return new longArrayIterator$ObjectLiteral(array);
-    }
-    function noWhenBranchMatched() {
-      throw NoWhenBranchMatchedException_init();
-    }
     function captureStack(baseClass, instance) {
       if (Error.captureStackTrace) {
         Error.captureStackTrace(instance);
@@ -2241,15 +1994,8 @@
       NoSuchElementException.call($this, null);
       return $this;
     }
-    function NoWhenBranchMatchedException(message, cause) {
-      RuntimeException.call(this, message, cause);
-      this.name = 'NoWhenBranchMatchedException';
-    }
-    NoWhenBranchMatchedException.$metadata$ = {kind: Kind_CLASS, simpleName: 'NoWhenBranchMatchedException', interfaces: [RuntimeException]};
-    function NoWhenBranchMatchedException_init($this) {
-      $this = $this || Object.create(NoWhenBranchMatchedException.prototype);
-      NoWhenBranchMatchedException.call($this, null, null);
-      return $this;
+    function asList($receiver) {
+      return new ArrayList($receiver);
     }
     function copyOfRange_3($receiver, fromIndex, toIndex) {
       AbstractList$Companion_getInstance().checkRangeIndexes_cub51b$(fromIndex, toIndex, $receiver.length);
@@ -2691,16 +2437,6 @@
       return index;
     };
     ArrayList.$metadata$ = {kind: Kind_CLASS, simpleName: 'ArrayList', interfaces: [RandomAccess, AbstractMutableList, MutableList]};
-    function ArrayList_init($this) {
-      $this = $this || Object.create(ArrayList.prototype);
-      ArrayList.call($this, []);
-      return $this;
-    }
-    function ArrayList_init_1(elements, $this) {
-      $this = $this || Object.create(ArrayList.prototype);
-      ArrayList.call($this, copyToArray(elements));
-      return $this;
-    }
     var _stableSortingIsSupported;
     var EqualityComparator$HashCode_instance = null;
     function RandomAccess() {
@@ -2757,9 +2493,6 @@
     };
     BufferedOutputToConsoleLog.$metadata$ = {kind: Kind_CLASS, simpleName: 'BufferedOutputToConsoleLog', interfaces: [BufferedOutput]};
     var output;
-    function print(message) {
-      output.print_s8jyv4$(message);
-    }
     function SafeContinuation(delegate, initialResult) {
       this.delegate_0 = delegate;
       this.result_0 = initialResult;
@@ -3625,52 +3358,101 @@
     var AbstractMap$Companion_instance = null;
     var AbstractSet$Companion_instance = null;
     var ArrayDeque$Companion_instance = null;
-    var EmptyIterator_instance = null;
-    var EmptyList_instance = null;
-    function ArrayAsCollection(values, isVarargs) {
-      this.values = values;
-      this.isVarargs = isVarargs;
+    function EmptyIterator() {
+      EmptyIterator_instance = this;
     }
-    Object.defineProperty(ArrayAsCollection.prototype, 'size', {configurable: true, get: function () {
-      return this.values.length;
-    }});
-    ArrayAsCollection.prototype.isEmpty = function () {
-      return this.values.length === 0;
+    EmptyIterator.prototype.hasNext = function () {
+      return false;
     };
-    ArrayAsCollection.prototype.contains_11rb$ = function (element) {
-      return contains(this.values, element);
+    EmptyIterator.prototype.hasPrevious = function () {
+      return false;
     };
-    ArrayAsCollection.prototype.containsAll_brywnq$ = function (elements) {
-      var all$result;
-      all$break: do {
-        var tmp$;
-        if (Kotlin.isType(elements, Collection) && elements.isEmpty()) {
-          all$result = true;
-          break all$break;
-        }
-        tmp$ = elements.iterator();
-        while (tmp$.hasNext()) {
-          var element = tmp$.next();
-          if (!this.contains_11rb$(element)) {
-            all$result = false;
-            break all$break;
-          }
-        }
-        all$result = true;
+    EmptyIterator.prototype.nextIndex = function () {
+      return 0;
+    };
+    EmptyIterator.prototype.previousIndex = function () {
+      return -1;
+    };
+    EmptyIterator.prototype.next = function () {
+      throw NoSuchElementException_init();
+    };
+    EmptyIterator.prototype.previous = function () {
+      throw NoSuchElementException_init();
+    };
+    EmptyIterator.$metadata$ = {kind: Kind_OBJECT, simpleName: 'EmptyIterator', interfaces: [ListIterator]};
+    var EmptyIterator_instance = null;
+    function EmptyIterator_getInstance() {
+      if (EmptyIterator_instance === null) {
+        new EmptyIterator();
       }
-       while (false);
-      return all$result;
+      return EmptyIterator_instance;
+    }
+    function EmptyList() {
+      EmptyList_instance = this;
+      this.serialVersionUID_0 = L_7390468764508069838;
+    }
+    EmptyList.prototype.equals = function (other) {
+      return Kotlin.isType(other, List) && other.isEmpty();
     };
-    ArrayAsCollection.prototype.iterator = function () {
-      return Kotlin.arrayIterator(this.values);
+    EmptyList.prototype.hashCode = function () {
+      return 1;
     };
-    ArrayAsCollection.prototype.toArray = function () {
-      var $receiver = this.values;
-      return this.isVarargs ? $receiver : $receiver.slice();
+    EmptyList.prototype.toString = function () {
+      return '[]';
     };
-    ArrayAsCollection.$metadata$ = {kind: Kind_CLASS, simpleName: 'ArrayAsCollection', interfaces: [Collection]};
-    function mutableListOf_0(elements) {
-      return elements.length === 0 ? ArrayList_init() : ArrayList_init_1(new ArrayAsCollection(elements, true));
+    Object.defineProperty(EmptyList.prototype, 'size', {configurable: true, get: function () {
+      return 0;
+    }});
+    EmptyList.prototype.isEmpty = function () {
+      return true;
+    };
+    EmptyList.prototype.contains_11rb$ = function (element) {
+      return false;
+    };
+    EmptyList.prototype.containsAll_brywnq$ = function (elements) {
+      return elements.isEmpty();
+    };
+    EmptyList.prototype.get_za3lpa$ = function (index) {
+      throw new IndexOutOfBoundsException("Empty list doesn't contain element at index " + index + '.');
+    };
+    EmptyList.prototype.indexOf_11rb$ = function (element) {
+      return -1;
+    };
+    EmptyList.prototype.lastIndexOf_11rb$ = function (element) {
+      return -1;
+    };
+    EmptyList.prototype.iterator = function () {
+      return EmptyIterator_getInstance();
+    };
+    EmptyList.prototype.listIterator = function () {
+      return EmptyIterator_getInstance();
+    };
+    EmptyList.prototype.listIterator_za3lpa$ = function (index) {
+      if (index !== 0)
+        throw new IndexOutOfBoundsException('Index: ' + index);
+      return EmptyIterator_getInstance();
+    };
+    EmptyList.prototype.subList_vux9f0$ = function (fromIndex, toIndex) {
+      if (fromIndex === 0 && toIndex === 0)
+        return this;
+      throw new IndexOutOfBoundsException('fromIndex: ' + fromIndex + ', toIndex: ' + toIndex);
+    };
+    EmptyList.prototype.readResolve_0 = function () {
+      return EmptyList_getInstance();
+    };
+    EmptyList.$metadata$ = {kind: Kind_OBJECT, simpleName: 'EmptyList', interfaces: [RandomAccess, Serializable, List]};
+    var EmptyList_instance = null;
+    function EmptyList_getInstance() {
+      if (EmptyList_instance === null) {
+        new EmptyList();
+      }
+      return EmptyList_instance;
+    }
+    function emptyList() {
+      return EmptyList_getInstance();
+    }
+    function listOf_0(elements) {
+      return elements.length > 0 ? asList(elements) : emptyList();
     }
     function get_lastIndex_12($receiver) {
       return $receiver.size - 1 | 0;
@@ -4165,7 +3947,6 @@
     var UShort$Companion_instance = null;
     var package$kotlin = _.kotlin || (_.kotlin = {});
     var package$collections = package$kotlin.collections || (package$kotlin.collections = {});
-    package$collections.contains_mjy6jw$ = contains;
     package$collections.get_lastIndex_m7z4lg$ = get_lastIndex;
     package$collections.indexOf_mjy6jw$ = indexOf;
     package$collections.get_indices_m7z4lg$ = get_indices;
@@ -4174,7 +3955,7 @@
     package$collections.lastIndexOf_mjy6jw$ = lastIndexOf;
     package$collections.single_us0mfu$ = single;
     package$kotlin.IllegalArgumentException_init_pdl1vj$ = IllegalArgumentException_init_0;
-    package$collections.ArrayList_init_287e2$ = ArrayList_init;
+    package$collections.emptyList_287e2$ = emptyList;
     package$kotlin.NoSuchElementException_init = NoSuchElementException_init;
     package$kotlin.UnsupportedOperationException_init_pdl1vj$ = UnsupportedOperationException_init_0;
     package$collections.get_lastIndex_55thoc$ = get_lastIndex_12;
@@ -4196,14 +3977,9 @@
     package$collections.MutableIterator = MutableIterator;
     package$collections.ListIterator = ListIterator;
     package$collections.MutableListIterator = MutableListIterator;
-    package$collections.ByteIterator = ByteIterator;
     package$collections.CharIterator = CharIterator;
-    package$collections.ShortIterator = ShortIterator;
     package$collections.IntIterator = IntIterator;
     package$collections.LongIterator = LongIterator;
-    package$collections.FloatIterator = FloatIterator;
-    package$collections.DoubleIterator = DoubleIterator;
-    package$collections.BooleanIterator = BooleanIterator;
     package$ranges.CharProgressionIterator = CharProgressionIterator;
     package$ranges.IntProgressionIterator = IntProgressionIterator;
     package$ranges.LongProgressionIterator = LongProgressionIterator;
@@ -4224,16 +4000,6 @@
     var package$internal = package$kotlin.internal || (package$kotlin.internal = {});
     package$internal.getProgressionLastElement_qt1dr2$ = getProgressionLastElement;
     package$internal.getProgressionLastElement_b9bd0d$ = getProgressionLastElement_0;
-    _.arrayIterator = arrayIterator;
-    _.booleanArrayIterator = booleanArrayIterator;
-    _.byteArrayIterator = byteArrayIterator;
-    _.shortArrayIterator = shortArrayIterator;
-    _.charArrayIterator = charArrayIterator;
-    _.intArrayIterator = intArrayIterator;
-    _.floatArrayIterator = floatArrayIterator;
-    _.doubleArrayIterator = doubleArrayIterator;
-    _.longArrayIterator = longArrayIterator;
-    _.noWhenBranchMatched = noWhenBranchMatched;
     _.captureStack = captureStack;
     _.BoxedChar = BoxedChar;
     var package$coroutines = package$kotlin.coroutines || (package$kotlin.coroutines = {});
@@ -4255,8 +4021,7 @@
     package$kotlin.NullPointerException = NullPointerException;
     package$kotlin.ClassCastException = ClassCastException;
     package$kotlin.NoSuchElementException = NoSuchElementException;
-    package$kotlin.NoWhenBranchMatchedException_init = NoWhenBranchMatchedException_init;
-    package$kotlin.NoWhenBranchMatchedException = NoWhenBranchMatchedException;
+    package$collections.asList_us0mfu$ = asList;
     package$collections.arrayCopy = arrayCopy;
     package$collections.copyOfRange_5f8l3u$ = copyOfRange_3;
     package$kotlin.Comparator = Comparator;
@@ -4265,14 +4030,12 @@
     package$collections.copyToExistingArrayImpl = copyToArrayImpl_0;
     package$collections.AbstractMutableCollection = AbstractMutableCollection;
     package$collections.AbstractMutableList = AbstractMutableList;
-    package$collections.ArrayList_init_mqih57$ = ArrayList_init_1;
     package$collections.ArrayList = ArrayList;
     package$collections.RandomAccess = RandomAccess;
     package$io.BaseOutput = BaseOutput;
     package$io.NodeJsOutput = NodeJsOutput;
     package$io.BufferedOutput = BufferedOutput;
     package$io.BufferedOutputToConsoleLog = BufferedOutputToConsoleLog;
-    package$io.print_s8jyv4$ = print;
     package$coroutines.SafeContinuation_init_wj8d80$ = SafeContinuation_init;
     package$coroutines.SafeContinuation = SafeContinuation;
     _.throwNPE = throwNPE;
@@ -4311,7 +4074,9 @@
     package$collections.AbstractCollection = AbstractCollection;
     Object.defineProperty(AbstractList, 'Companion', {get: AbstractList$Companion_getInstance});
     package$collections.AbstractList = AbstractList;
-    package$collections.mutableListOf_i5x0yv$ = mutableListOf_0;
+    Object.defineProperty(package$collections, 'EmptyIterator', {get: EmptyIterator_getInstance});
+    Object.defineProperty(package$collections, 'EmptyList', {get: EmptyList_getInstance});
+    package$collections.listOf_i5x0yv$ = listOf_0;
     package$collections.removeAll_uhyeqt$ = removeAll_3;
     package$collections.removeAll_qafx1e$ = removeAll_4;
     package$coroutines.Continuation = Continuation;

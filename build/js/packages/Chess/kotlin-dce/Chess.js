@@ -37,16 +37,15 @@
   var contentEquals = Kotlin.arrayEquals;
   var contentHashCode = Kotlin.arrayHashCode;
   var Kind_CLASS = Kotlin.Kind.CLASS;
+  var Kind_OBJECT = Kotlin.Kind.OBJECT;
+  var NotImplementedError_init = Kotlin.kotlin.NotImplementedError;
   var Enum = Kotlin.kotlin.Enum;
   var throwISE = Kotlin.throwISE;
   var equals = Kotlin.equals;
   var hashCode = Kotlin.hashCode;
-  var Any = Object;
-  var mutableListOf = Kotlin.kotlin.collections.mutableListOf_i5x0yv$;
-  var ArrayList_init = Kotlin.kotlin.collections.ArrayList_init_287e2$;
+  var listOf = Kotlin.kotlin.collections.listOf_i5x0yv$;
   var Array_0 = Array;
   var ensureNotNull = Kotlin.ensureNotNull;
-  var print = Kotlin.kotlin.io.print_s8jyv4$;
   var Unit = Kotlin.kotlin.Unit;
   var create = $module$kotlin_react.react.create_gax9jq$;
   var createRoot = $module$react_dom_client.createRoot;
@@ -91,6 +90,9 @@
   Bitboard.prototype.toString = function () {
     return 'Bitboard(pieceColor=' + Kotlin.toString(this.pieceColor) + (', piece=' + Kotlin.toString(this.piece)) + ')';
   };
+  var Parser$Companion$PositionToNotation_instance = null;
+  var Parser$Companion$NotationToPostion_instance = null;
+  var Parser$Companion_instance = null;
   function PieceColor(name, ordinal) {
     Enum.call(this);
     this.name$ = name;
@@ -197,25 +199,51 @@
     }
   }
   Piece.valueOf_61zpoe$ = Piece$valueOf;
+  function CastlingRight() {
+    this.kingside = false;
+    this.queenside = false;
+  }
+  CastlingRight.$metadata$ = {kind: Kind_CLASS, simpleName: 'CastlingRight', interfaces: []};
   function Position() {
-    this.castlingRights = mutableListOf([true, true]);
+    this.castlingRights = listOf([new CastlingRight(), new CastlingRight()]);
     this.sideToMove = PieceColor$WHITE_getInstance();
-    this.enPassanteTargetSquares = ArrayList_init();
+    this.enPassantTargetSquare = 0;
     this.halfMoveClock = 0;
+    this.fullMoveClock = 1;
     var array = Array_0(32);
     var tmp$;
     tmp$ = array.length - 1 | 0;
     for (var i = 0; i <= tmp$; i++) {
-      var tmp$_0, tmp$_1, tmp$_2;
-      tmp$_0 = i > 15 ? PieceColor$WHITE_getInstance() : PieceColor$BLACK_getInstance();
-      tmp$_1 = (i % 16 | 0) < 8;
-      if (tmp$_1 === true)
-        tmp$_2 = Piece$PAWN_getInstance();
-      else if (tmp$_1 === false)
-        tmp$_2 = Piece$values()[(i % 6 | 0) + 1 | 0];
-      else
-        tmp$_2 = Kotlin.noWhenBranchMatched();
-      array[i] = new Bitboard(tmp$_0, tmp$_2);
+      var tmp$_0, tmp$_1;
+      tmp$_0 = i < 15 ? PieceColor$WHITE_getInstance() : PieceColor$BLACK_getInstance();
+      if ((i % 16 | 0) < 8)
+        tmp$_1 = Piece$PAWN_getInstance();
+      else {
+        switch (i % 8 | 0) {
+          case 0:
+          case 7:
+            tmp$_1 = Piece$ROOK_getInstance();
+            break;
+          case 1:
+          case 6:
+            tmp$_1 = Piece$KNIGHT_getInstance();
+            break;
+          case 2:
+          case 5:
+            tmp$_1 = Piece$BISHOP_getInstance();
+            break;
+          case 3:
+            tmp$_1 = i < 15 ? Piece$KING_getInstance() : Piece$QUEEN_getInstance();
+            break;
+          case 4:
+            tmp$_1 = i < 15 ? Piece$QUEEN_getInstance() : Piece$KING_getInstance();
+            break;
+          default:
+            tmp$_1 = Piece$PAWN_getInstance();
+            break;
+        }
+      }
+      array[i] = new Bitboard(tmp$_0, tmp$_1);
     }
     this.pieces = array;
   }
@@ -230,10 +258,6 @@
       return false;
     if (this.sideToMove !== other.sideToMove)
       return false;
-    if (!equals(this.enPassanteTargetSquares, other.enPassanteTargetSquares))
-      return false;
-    if (this.halfMoveClock !== other.halfMoveClock)
-      return false;
     if (!contentEquals(this.pieces, other.pieces))
       return false;
     return true;
@@ -241,13 +265,11 @@
   Position.prototype.hashCode = function () {
     var result = hashCode(this.castlingRights);
     result = (31 * result | 0) + this.sideToMove.hashCode() | 0;
-    result = (31 * result | 0) + hashCode(this.enPassanteTargetSquares) | 0;
+    result = (31 * result | 0) + this.enPassantTargetSquare | 0;
     result = (31 * result | 0) + this.halfMoveClock | 0;
+    result = (31 * result | 0) + this.fullMoveClock | 0;
     result = (31 * result | 0) + contentHashCode(this.pieces) | 0;
     return result;
-  };
-  Position.prototype.toString = function () {
-    return Any.prototype.toString.call(this);
   };
   Position.$metadata$ = {kind: Kind_CLASS, simpleName: 'Position', interfaces: []};
   function main$lambda($receiver) {
@@ -257,19 +279,17 @@
   function main() {
     var container = document.createElement('div');
     ensureNotNull(document.body).appendChild(container);
-    var pos = new Position();
-    print(pos);
     var welcome = create(Welcome, main$lambda);
     createRoot(container).render(welcome);
   }
-  function Welcome$lambda$lambda(closure$name) {
+  function Welcome$lambda$lambda(closure$pos) {
     return function ($receiver) {
       var $receiver_0 = {};
       $receiver_0.padding = (5).toString() + 'px';
       $receiver_0.backgroundColor = 'rgb(' + 8 + ',' + 97 + ',' + 22 + ')';
       $receiver_0.color = 'rgb(' + 56 + ',' + 246 + ',' + 137 + ')';
       $receiver.className = css($receiver_0);
-      $receiver.unaryPlus_pdl1vz$('Hello, ' + closure$name[0]);
+      $receiver.unaryPlus_pdl1vz$(JSON.stringify(closure$pos.pieces));
       return Unit;
     };
   }
@@ -297,8 +317,7 @@
   function Welcome$lambda($receiver, props) {
     var name = useState(props.name);
     var pos = new Position();
-    window.alert(JSON.stringify(pos.pieces[10]));
-    $receiver.invoke_gax9jq$(html.ReactHTML.div, Welcome$lambda$lambda(name));
+    $receiver.invoke_gax9jq$(html.ReactHTML.div, Welcome$lambda$lambda(pos));
     $receiver.invoke_gax9jq$(html.ReactHTML.input, Welcome$lambda$lambda_0(name));
     return Unit;
   }
@@ -315,6 +334,7 @@
   Object.defineProperty(Piece, 'QUEEN', {get: Piece$QUEEN_getInstance});
   Object.defineProperty(Piece, 'KING', {get: Piece$KING_getInstance});
   package$position.Piece = Piece;
+  package$position.CastlingRight = CastlingRight;
   package$position.Position = Position;
   _.main = main;
   $$importsForInline$$['kotlin-emotion'] = $module$kotlin_emotion;

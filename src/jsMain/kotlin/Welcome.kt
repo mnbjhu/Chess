@@ -18,14 +18,13 @@ val Welcome = FC<WelcomeProps> { props ->
     var name by useState(props.name)
     val pos = Position()
 
-    window.alert(JSON.stringify(pos.pieces[10]))
     div {
         css {
             padding = 5.px
             backgroundColor = rgb(8, 97, 22)
             color = rgb(56, 246, 137)
         }
-        +"Hello, $name"
+        +JSON.stringify(pos.pieces)
     }
     input {
         css {

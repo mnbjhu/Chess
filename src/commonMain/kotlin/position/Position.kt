@@ -19,17 +19,33 @@ class CastlingRight {
     var queenside: Boolean = false
 }
 
+/** The Position class describes the state of the board */
 class Position {
     val castlingRights: List<CastlingRight> = listOf<CastlingRight>(CastlingRight(), CastlingRight())
-    val sideToMove: PieceColor = PieceColor.WHITE
-    val enPassantTargetSquares: MutableList<Int> = mutableListOf()
-    val halfMoveClock: Int = 0
+    var sideToMove: PieceColor = PieceColor.WHITE
+    var enPassantTargetSquare: Int = 0
+    var halfMoveClock: Int = 0
+    var fullMoveClock: Int = 1
     val pieces: Array<Bitboard> = Array(32) {
         Bitboard(
-            if (it > 15) PieceColor.WHITE else PieceColor.BLACK,
-            when (it % 16 < 8) {
-                true -> Piece.PAWN
-                false -> Piece.values()[it % 6 + 1]
+            if (it < 15) PieceColor.WHITE else PieceColor.BLACK,
+            if (it % 16 < 8) Piece.PAWN else {
+                when (it % 8) {
+                    0, 7 -> Piece.ROOK
+                    1, 6 -> Piece.KNIGHT
+                    2, 5 -> Piece.BISHOP
+                    3 -> {
+                        if (it < 15) Piece.KING else Piece.QUEEN
+                    }
+
+                    4 -> {
+                        if (it < 15) Piece.QUEEN else Piece.KING
+                    }
+
+                    else -> {
+                        Piece.PAWN
+                    }
+                }
             }
         )
     }
@@ -42,8 +58,6 @@ class Position {
 
         if (castlingRights != other.castlingRights) return false
         if (sideToMove != other.sideToMove) return false
-        if (enPassantTargetSquares != other.enPassantTargetSquares) return false
-        if (halfMoveClock != other.halfMoveClock) return false
         if (!pieces.contentEquals(other.pieces)) return false
 
         return true
@@ -52,8 +66,9 @@ class Position {
     override fun hashCode(): Int {
         var result = castlingRights.hashCode()
         result = 31 * result + sideToMove.hashCode()
-        result = 31 * result + enPassantTargetSquares.hashCode()
+        result = 31 * result + enPassantTargetSquare
         result = 31 * result + halfMoveClock
+        result = 31 * result + fullMoveClock
         result = 31 * result + pieces.contentHashCode()
         return result
     }
