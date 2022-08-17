@@ -14,13 +14,17 @@ enum class Piece(i: Int) {
     KING(Int.MAX_VALUE)
 }
 
+class CastlingRight {
+    var kingside: Boolean = false
+    var queenside: Boolean = false
+}
 
 class Position {
-    val castlingRights: MutableList<Boolean> = mutableListOf(true, true);
-    val sideToMove: PieceColor = PieceColor.WHITE;
-    val enPassanteTargetSquares: MutableList<Int> = mutableListOf();
-    val halfMoveClock: Int = 0;
-    val pieces: Array<Bitboard> = Array(32) { it ->
+    val castlingRights: List<CastlingRight> = listOf<CastlingRight>(CastlingRight(), CastlingRight())
+    val sideToMove: PieceColor = PieceColor.WHITE
+    val enPassantTargetSquares: MutableList<Int> = mutableListOf()
+    val halfMoveClock: Int = 0
+    val pieces: Array<Bitboard> = Array(32) {
         Bitboard(
             if (it > 15) PieceColor.WHITE else PieceColor.BLACK,
             when (it % 16 < 8) {
@@ -38,7 +42,7 @@ class Position {
 
         if (castlingRights != other.castlingRights) return false
         if (sideToMove != other.sideToMove) return false
-        if (enPassanteTargetSquares != other.enPassanteTargetSquares) return false
+        if (enPassantTargetSquares != other.enPassantTargetSquares) return false
         if (halfMoveClock != other.halfMoveClock) return false
         if (!pieces.contentEquals(other.pieces)) return false
 
@@ -48,14 +52,10 @@ class Position {
     override fun hashCode(): Int {
         var result = castlingRights.hashCode()
         result = 31 * result + sideToMove.hashCode()
-        result = 31 * result + enPassanteTargetSquares.hashCode()
+        result = 31 * result + enPassantTargetSquares.hashCode()
         result = 31 * result + halfMoveClock
         result = 31 * result + pieces.contentHashCode()
         return result
     }
-
-    override fun toString(): String {
-        return super.toString()
-    }
-};
+}
 
