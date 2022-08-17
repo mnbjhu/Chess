@@ -7,10 +7,12 @@ plugins {
 group = "org.example"
 version = "1.0-SNAPSHOT"
 
-repositories {
-    jcenter()
-    mavenCentral()
+val koinVersion: String by project
+val logbackVersion: String by project
 
+
+repositories {
+    mavenCentral()
     maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
     maven (url = "https://jitpack.io")
 }
@@ -48,11 +50,15 @@ kotlin {
             dependencies {
                 implementation("com.github.mnbjhu:KotlinRedisGraph:0.3.0")
 
-
-
+                // Koin for Ktor
+                implementation("io.insert-koin:koin-ktor:$koinVersion")
+                implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+                // Ktor
                 implementation("io.ktor:ktor-server-netty:2.0.1")
                 implementation("io.ktor:ktor-server-html-builder-jvm:2.0.1")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
+                // Logger
+                implementation("ch.qos.logback:logback-classic:$logbackVersion")
             }
         }
         val jvmTest by getting
