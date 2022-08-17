@@ -1,0 +1,16 @@
+{
+  "name": "Chess",
+  "version": "1.0.0-SNAPSHOT",
+  "main": "Chess.js",
+  "devDependencies": {
+    "webpack": "5.69.1",
+    "webpack-cli": "4.9.2",
+    "format-util": "1.0.5",
+    "source-map-loader": "3.0.1",
+    "webpack-dev-server": "4.7.4"
+  },
+  "dependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": []
+}
