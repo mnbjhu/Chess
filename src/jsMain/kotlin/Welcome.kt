@@ -3,6 +3,8 @@ import csstype.rgb
 import react.FC
 import react.Props
 import emotion.react.css
+import kotlinx.browser.window
+import position.Position
 import react.dom.html.InputType
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
@@ -14,6 +16,9 @@ external interface WelcomeProps : Props {
 
 val Welcome = FC<WelcomeProps> { props ->
     var name by useState(props.name)
+    val pos = Position()
+
+    window.alert(JSON.stringify(pos.pieces[10]))
     div {
         css {
             padding = 5.px

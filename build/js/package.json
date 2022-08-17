@@ -1,0 +1,25 @@
+{
+  "name": "Chess",
+  "version": "1.0-SNAPSHOT",
+  "private": true,
+  "workspaces": [
+    "packages/Chess",
+    "packages/Chess-test",
+    "packages_imported/kotlin/1.7.0",
+    "packages_imported/kotlin-react/18.0.0-pre.332-kotlin-1.6.21",
+    "packages_imported/kotlin-react-core/18.0.0-pre.332-kotlin-1.6.21",
+    "packages_imported/kotlin-csstype/3.0.11-pre.332-kotlin-1.6.21",
+    "packages_imported/kotlin-extensions/1.0.1-pre.332-kotlin-1.6.21",
+    "packages_imported/kotlin-react-dom/18.0.0-pre.332-kotlin-1.6.21",
+    "packages_imported/kotlin-browser/0.0.1-pre.332-kotlin-1.6.21",
+    "packages_imported/kotlin-emotion/11.9.0-pre.332-kotlin-1.6.21",
+    "packages_imported/kotlin-test-js-runner/1.7.0",
+    "packages_imported/kotlin-test/1.7.0"
+  ],
+  "resolutions": {},
+  "devDependencies": {},
+  "dependencies": {},
+  "peerDependencies": {},
+  "optionalDependencies": {},
+  "bundledDependencies": []
+}
