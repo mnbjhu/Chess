@@ -4,7 +4,7 @@ package position
  * into standard chess notation and vice versa */
 class Parser {
     companion object {
-        object PositionToNotation {
+        object toNotation {
             /**
              * Transform board position into Forsyth-Edwards notation
              * @param position State of the board
@@ -22,7 +22,7 @@ class Parser {
             }
         }
 
-        object NotationToPostion {
+        object toPosition {
             /**
              * Transform FEN notation into a board Position
              * @param notation FEN notation

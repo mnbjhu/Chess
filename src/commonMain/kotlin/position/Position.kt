@@ -1,10 +1,12 @@
 package position
 
+/** Enumeration of piece colors */
 enum class PieceColor {
     WHITE,
     BLACK
 }
 
+/** Enumeration of pieces mapped to their values */
 enum class Piece(i: Int) {
     PAWN(1),
     KNIGHT(3),

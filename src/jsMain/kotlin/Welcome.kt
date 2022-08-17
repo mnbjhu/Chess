@@ -4,6 +4,7 @@ import react.FC
 import react.Props
 import emotion.react.css
 import kotlinx.browser.window
+import position.Parser
 import position.Position
 import react.dom.html.InputType
 import react.dom.html.ReactHTML.div
@@ -24,7 +25,6 @@ val Welcome = FC<WelcomeProps> { props ->
             backgroundColor = rgb(8, 97, 22)
             color = rgb(56, 246, 137)
         }
-        +JSON.stringify(pos.pieces)
     }
     input {
         css {
