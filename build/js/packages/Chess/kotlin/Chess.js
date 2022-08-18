@@ -38,6 +38,8 @@
   var contentHashCode = Kotlin.arrayHashCode;
   var Kind_CLASS = Kotlin.Kind.CLASS;
   var Kind_OBJECT = Kotlin.Kind.OBJECT;
+  var split = Kotlin.kotlin.text.split_o64adg$;
+  var print = Kotlin.kotlin.io.print_s8jyv4$;
   var NotImplementedError_init = Kotlin.kotlin.NotImplementedError;
   var Enum = Kotlin.kotlin.Enum;
   var throwISE = Kotlin.throwISE;
@@ -100,47 +102,56 @@
   function Parser$Companion() {
     Parser$Companion_instance = this;
   }
-  function Parser$Companion$PositionToNotation() {
-    Parser$Companion$PositionToNotation_instance = this;
+  function Parser$Companion$toNotation() {
+    Parser$Companion$toNotation_instance = this;
   }
-  Parser$Companion$PositionToNotation.prototype.fen_lzdzf6$ = function (position) {
+  Parser$Companion$toNotation.prototype.fen_lzdzf6$ = function (position) {
     throw new NotImplementedError_init();
   };
-  Parser$Companion$PositionToNotation.prototype.pgn_lzdzf6$ = function (position) {
+  Parser$Companion$toNotation.prototype.pgn_lzdzf6$ = function (position) {
     throw new NotImplementedError_init();
   };
-  Parser$Companion$PositionToNotation.$metadata$ = {
+  Parser$Companion$toNotation.$metadata$ = {
     kind: Kind_OBJECT,
-    simpleName: 'PositionToNotation',
+    simpleName: 'toNotation',
     interfaces: []
   };
-  var Parser$Companion$PositionToNotation_instance = null;
-  function Parser$Companion$PositionToNotation_getInstance() {
-    if (Parser$Companion$PositionToNotation_instance === null) {
-      new Parser$Companion$PositionToNotation();
+  var Parser$Companion$toNotation_instance = null;
+  function Parser$Companion$toNotation_getInstance() {
+    if (Parser$Companion$toNotation_instance === null) {
+      new Parser$Companion$toNotation();
     }
-    return Parser$Companion$PositionToNotation_instance;
+    return Parser$Companion$toNotation_instance;
   }
-  function Parser$Companion$NotationToPostion() {
-    Parser$Companion$NotationToPostion_instance = this;
+  function Parser$Companion$toPosition() {
+    Parser$Companion$toPosition_instance = this;
   }
-  Parser$Companion$NotationToPostion.prototype.fen_61zpoe$ = function (notation) {
+  Parser$Companion$toPosition.prototype.fen_61zpoe$ = function (notation) {
+    var tmp$ = split(notation, Kotlin.charArrayOf(32));
+    var ranks = tmp$.get_za3lpa$(0);
+    var sideToMove = tmp$.get_za3lpa$(1);
+    var castlingRights = tmp$.get_za3lpa$(2);
+    var enPassantTargetSquare = tmp$.get_za3lpa$(3);
+    var halfMoveClock = tmp$.get_za3lpa$(4)
+    , fullMoveClock = component6(tmp$);
+    print(split(notation, Kotlin.charArrayOf(47)));
+    var position = new Position();
+    return sideToMove;
+  };
+  Parser$Companion$toPosition.prototype.pgn_61zpoe$ = function (notation) {
     throw new NotImplementedError_init();
   };
-  Parser$Companion$NotationToPostion.prototype.pgn_61zpoe$ = function (notation) {
-    throw new NotImplementedError_init();
-  };
-  Parser$Companion$NotationToPostion.$metadata$ = {
+  Parser$Companion$toPosition.$metadata$ = {
     kind: Kind_OBJECT,
-    simpleName: 'NotationToPostion',
+    simpleName: 'toPosition',
     interfaces: []
   };
-  var Parser$Companion$NotationToPostion_instance = null;
-  function Parser$Companion$NotationToPostion_getInstance() {
-    if (Parser$Companion$NotationToPostion_instance === null) {
-      new Parser$Companion$NotationToPostion();
+  var Parser$Companion$toPosition_instance = null;
+  function Parser$Companion$toPosition_getInstance() {
+    if (Parser$Companion$toPosition_instance === null) {
+      new Parser$Companion$toPosition();
     }
-    return Parser$Companion$NotationToPostion_instance;
+    return Parser$Companion$toPosition_instance;
   }
   Parser$Companion.$metadata$ = {
     kind: Kind_OBJECT,
@@ -159,6 +170,12 @@
     simpleName: 'Parser',
     interfaces: []
   };
+  function component6($receiver) {
+    return $receiver.get_za3lpa$(5);
+  }
+  function component7($receiver) {
+    return $receiver.get_za3lpa$(6);
+  }
   function PieceColor(name, ordinal) {
     Enum.call(this);
     this.name$ = name;
@@ -283,6 +300,7 @@
     interfaces: []
   };
   function Position() {
+    Position$Companion_getInstance();
     this.castlingRights = listOf([new CastlingRight(), new CastlingRight()]);
     this.sideToMove = PieceColor$WHITE_getInstance();
     this.enPassantTargetSquare = 0;
@@ -325,6 +343,22 @@
     }
     this.pieces = array;
   }
+  function Position$Companion() {
+    Position$Companion_instance = this;
+    this.INITIAL_POSITION = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  }
+  Position$Companion.$metadata$ = {
+    kind: Kind_OBJECT,
+    simpleName: 'Companion',
+    interfaces: []
+  };
+  var Position$Companion_instance = null;
+  function Position$Companion_getInstance() {
+    if (Position$Companion_instance === null) {
+      new Position$Companion();
+    }
+    return Position$Companion_instance;
+  }
   Position.prototype.equals = function (other) {
     var tmp$, tmp$_0;
     if (this === other)
@@ -364,16 +398,12 @@
     var welcome = create(Welcome, main$lambda);
     createRoot(container).render(welcome);
   }
-  function Welcome$lambda$lambda(closure$pos) {
-    return function ($receiver) {
-      var $receiver_0 = {};
-      $receiver_0.padding = (5).toString() + 'px';
-      $receiver_0.backgroundColor = 'rgb(' + 8 + ',' + 97 + ',' + 22 + ')';
-      $receiver_0.color = 'rgb(' + 56 + ',' + 246 + ',' + 137 + ')';
-      $receiver.className = css($receiver_0);
-      $receiver.unaryPlus_pdl1vz$(JSON.stringify(closure$pos.pieces));
-      return Unit;
-    };
+  function Welcome$lambda$lambda($receiver) {
+    var $receiver_0 = {};
+    $receiver_0.padding = (5).toString() + 'px';
+    $receiver.className = css($receiver_0);
+    $receiver.unaryPlus_pdl1vz$(JSON.stringify(Parser$Companion$toPosition_getInstance().fen_61zpoe$(Position$Companion_getInstance().INITIAL_POSITION)));
+    return Unit;
   }
   function Welcome$lambda$lambda$lambda(closure$name) {
     return function (event) {
@@ -398,24 +428,25 @@
   }
   function Welcome$lambda($receiver, props) {
     var name = useState(props.name);
-    var pos = new Position();
-    $receiver.invoke_gax9jq$(html.ReactHTML.div, Welcome$lambda$lambda(pos));
+    $receiver.invoke_gax9jq$(html.ReactHTML.div, Welcome$lambda$lambda);
     $receiver.invoke_gax9jq$(html.ReactHTML.input, Welcome$lambda$lambda_0(name));
     return Unit;
   }
   var Welcome;
   var package$position = _.position || (_.position = {});
   package$position.Bitboard = Bitboard;
-  Object.defineProperty(Parser$Companion.prototype, 'PositionToNotation', {
-    get: Parser$Companion$PositionToNotation_getInstance
+  Object.defineProperty(Parser$Companion.prototype, 'toNotation', {
+    get: Parser$Companion$toNotation_getInstance
   });
-  Object.defineProperty(Parser$Companion.prototype, 'NotationToPostion', {
-    get: Parser$Companion$NotationToPostion_getInstance
+  Object.defineProperty(Parser$Companion.prototype, 'toPosition', {
+    get: Parser$Companion$toPosition_getInstance
   });
   Object.defineProperty(Parser, 'Companion', {
     get: Parser$Companion_getInstance
   });
   package$position.Parser = Parser;
+  package$position.component6_2p1efm$ = component6;
+  package$position.component7_2p1efm$ = component7;
   Object.defineProperty(PieceColor, 'WHITE', {
     get: PieceColor$WHITE_getInstance
   });
@@ -443,6 +474,9 @@
   });
   package$position.Piece = Piece;
   package$position.CastlingRight = CastlingRight;
+  Object.defineProperty(Position, 'Companion', {
+    get: Position$Companion_getInstance
+  });
   package$position.Position = Position;
   _.main = main;
   $$importsForInline$$['kotlin-csstype'] = $module$kotlin_csstype;

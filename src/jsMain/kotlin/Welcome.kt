@@ -17,14 +17,12 @@ external interface WelcomeProps : Props {
 
 val Welcome = FC<WelcomeProps> { props ->
     var name by useState(props.name)
-    val pos = Position()
 
     div {
         css {
             padding = 5.px
-            backgroundColor = rgb(8, 97, 22)
-            color = rgb(56, 246, 137)
         }
+        +JSON.stringify(Parser.Companion.toPosition.fen(Position.Companion.INITIAL_POSITION));
     }
     input {
         css {

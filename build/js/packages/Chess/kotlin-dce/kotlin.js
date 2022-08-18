@@ -1185,6 +1185,22 @@
     IntRange.prototype.constructor = IntRange;
     LongRange.prototype = Object.create(LongProgression.prototype);
     LongRange.prototype.constructor = LongRange;
+    booleanArrayIterator$ObjectLiteral.prototype = Object.create(BooleanIterator.prototype);
+    booleanArrayIterator$ObjectLiteral.prototype.constructor = booleanArrayIterator$ObjectLiteral;
+    byteArrayIterator$ObjectLiteral.prototype = Object.create(ByteIterator.prototype);
+    byteArrayIterator$ObjectLiteral.prototype.constructor = byteArrayIterator$ObjectLiteral;
+    shortArrayIterator$ObjectLiteral.prototype = Object.create(ShortIterator.prototype);
+    shortArrayIterator$ObjectLiteral.prototype.constructor = shortArrayIterator$ObjectLiteral;
+    charArrayIterator$ObjectLiteral.prototype = Object.create(CharIterator.prototype);
+    charArrayIterator$ObjectLiteral.prototype.constructor = charArrayIterator$ObjectLiteral;
+    intArrayIterator$ObjectLiteral.prototype = Object.create(IntIterator.prototype);
+    intArrayIterator$ObjectLiteral.prototype.constructor = intArrayIterator$ObjectLiteral;
+    floatArrayIterator$ObjectLiteral.prototype = Object.create(FloatIterator.prototype);
+    floatArrayIterator$ObjectLiteral.prototype.constructor = floatArrayIterator$ObjectLiteral;
+    doubleArrayIterator$ObjectLiteral.prototype = Object.create(DoubleIterator.prototype);
+    doubleArrayIterator$ObjectLiteral.prototype.constructor = doubleArrayIterator$ObjectLiteral;
+    longArrayIterator$ObjectLiteral.prototype = Object.create(LongIterator.prototype);
+    longArrayIterator$ObjectLiteral.prototype.constructor = longArrayIterator$ObjectLiteral;
     Error_0.prototype = Object.create(Throwable.prototype);
     Error_0.prototype.constructor = Error_0;
     IllegalArgumentException.prototype = Object.create(RuntimeException.prototype);
@@ -1227,6 +1243,9 @@
     CoroutineSingletons.prototype.constructor = CoroutineSingletons;
     NotImplementedError.prototype = Object.create(Error_0.prototype);
     NotImplementedError.prototype.constructor = NotImplementedError;
+    function contains($receiver, element) {
+      return indexOf($receiver, element) >= 0;
+    }
     function indexOf($receiver, element) {
       if (element == null) {
         for (var index = 0; index !== $receiver.length; ++index) {
@@ -1265,6 +1284,19 @@
       return -1;
     }
     function single($receiver) {
+      var tmp$;
+      switch ($receiver.length) {
+        case 0:
+          throw new NoSuchElementException('Array is empty.');
+        case 1:
+          tmp$ = $receiver[0];
+          break;
+        default:
+          throw IllegalArgumentException_init_0('Array has more than one element.');
+      }
+      return tmp$;
+    }
+    function single_7($receiver) {
       var tmp$;
       switch ($receiver.length) {
         case 0:
@@ -1329,8 +1361,46 @@
         transform = null;
       return joinTo_8($receiver, StringBuilder_init_1(), separator, prefix, postfix, limit, truncated, transform).toString();
     }
+    function downTo_4($receiver, to) {
+      return IntProgression$Companion_getInstance().fromClosedRange_qt1dr2$($receiver, to, -1);
+    }
     function reversed_9($receiver) {
       return IntProgression$Companion_getInstance().fromClosedRange_qt1dr2$($receiver.last, $receiver.first, -$receiver.step | 0);
+    }
+    function until_4($receiver, to) {
+      if (to <= -2147483648)
+        return IntRange$Companion_getInstance().EMPTY;
+      return new IntRange($receiver, to - 1 | 0);
+    }
+    function coerceAtLeast_2($receiver, minimumValue) {
+      return $receiver < minimumValue ? minimumValue : $receiver;
+    }
+    function coerceAtMost_2($receiver, maximumValue) {
+      return $receiver > maximumValue ? maximumValue : $receiver;
+    }
+    function coerceIn_2($receiver, minimumValue, maximumValue) {
+      if (minimumValue > maximumValue)
+        throw IllegalArgumentException_init_0('Cannot coerce value to an empty range: maximum ' + maximumValue + ' is less than minimum ' + minimumValue + '.');
+      if ($receiver < minimumValue)
+        return minimumValue;
+      if ($receiver > maximumValue)
+        return maximumValue;
+      return $receiver;
+    }
+    function Iterable$ObjectLiteral_0(closure$iterator) {
+      this.closure$iterator = closure$iterator;
+    }
+    Iterable$ObjectLiteral_0.prototype.iterator = function () {
+      return this.closure$iterator();
+    };
+    Iterable$ObjectLiteral_0.$metadata$ = {kind: Kind_CLASS, interfaces: [Iterable]};
+    function asIterable$lambda_8(this$asIterable) {
+      return function () {
+        return this$asIterable.iterator();
+      };
+    }
+    function asIterable_10($receiver) {
+      return new Iterable$ObjectLiteral_0(asIterable$lambda_8($receiver));
     }
     var PI;
     var E;
@@ -1367,12 +1437,24 @@
     function MutableListIterator() {
     }
     MutableListIterator.$metadata$ = {kind: Kind_INTERFACE, simpleName: 'MutableListIterator', interfaces: [MutableIterator, ListIterator]};
+    function ByteIterator() {
+    }
+    ByteIterator.prototype.next = function () {
+      return this.nextByte();
+    };
+    ByteIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'ByteIterator', interfaces: [Iterator]};
     function CharIterator() {
     }
     CharIterator.prototype.next = function () {
       return toBoxedChar(this.nextChar());
     };
     CharIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'CharIterator', interfaces: [Iterator]};
+    function ShortIterator() {
+    }
+    ShortIterator.prototype.next = function () {
+      return this.nextShort();
+    };
+    ShortIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'ShortIterator', interfaces: [Iterator]};
     function IntIterator() {
     }
     IntIterator.prototype.next = function () {
@@ -1385,6 +1467,24 @@
       return this.nextLong();
     };
     LongIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'LongIterator', interfaces: [Iterator]};
+    function FloatIterator() {
+    }
+    FloatIterator.prototype.next = function () {
+      return this.nextFloat();
+    };
+    FloatIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'FloatIterator', interfaces: [Iterator]};
+    function DoubleIterator() {
+    }
+    DoubleIterator.prototype.next = function () {
+      return this.nextDouble();
+    };
+    DoubleIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'DoubleIterator', interfaces: [Iterator]};
+    function BooleanIterator() {
+    }
+    BooleanIterator.prototype.next = function () {
+      return this.nextBoolean();
+    };
+    BooleanIterator.$metadata$ = {kind: Kind_CLASS, simpleName: 'BooleanIterator', interfaces: [Iterator]};
     function CharProgressionIterator(first, last, step) {
       CharIterator.call(this);
       this.step = step;
@@ -1756,6 +1856,206 @@
       else
         throw IllegalArgumentException_init_0('Step is zero.');
     }
+    function arrayIterator$ObjectLiteral(closure$arr) {
+      this.closure$arr = closure$arr;
+      this.index = 0;
+    }
+    arrayIterator$ObjectLiteral.prototype.hasNext = function () {
+      return this.index < this.closure$arr.length;
+    };
+    arrayIterator$ObjectLiteral.prototype.next = function () {
+      var tmp$;
+      if (this.index < this.closure$arr.length) {
+        return this.closure$arr[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
+      } else
+        throw new NoSuchElementException(this.index.toString());
+    };
+    arrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [Iterator]};
+    function arrayIterator(array, type) {
+      if (type == null) {
+        var arr = array;
+        return new arrayIterator$ObjectLiteral(arr);
+      } else
+        switch (type) {
+          case 'BooleanArray':
+            return booleanArrayIterator(array);
+          case 'ByteArray':
+            return byteArrayIterator(array);
+          case 'ShortArray':
+            return shortArrayIterator(array);
+          case 'CharArray':
+            return charArrayIterator(array);
+          case 'IntArray':
+            return intArrayIterator(array);
+          case 'LongArray':
+            return longArrayIterator(array);
+          case 'FloatArray':
+            return floatArrayIterator(array);
+          case 'DoubleArray':
+            return doubleArrayIterator(array);
+          default:
+            throw IllegalStateException_init_0('Unsupported type argument for arrayIterator: ' + toString(type));
+        }
+    }
+    function booleanArrayIterator$ObjectLiteral(closure$array) {
+      this.closure$array = closure$array;
+      BooleanIterator.call(this);
+      this.index = 0;
+    }
+    booleanArrayIterator$ObjectLiteral.prototype.hasNext = function () {
+      return this.index < this.closure$array.length;
+    };
+    booleanArrayIterator$ObjectLiteral.prototype.nextBoolean = function () {
+      var tmp$;
+      if (this.index < this.closure$array.length) {
+        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
+      } else
+        throw new NoSuchElementException(this.index.toString());
+    };
+    booleanArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [BooleanIterator]};
+    function booleanArrayIterator(array) {
+      return new booleanArrayIterator$ObjectLiteral(array);
+    }
+    function byteArrayIterator$ObjectLiteral(closure$array) {
+      this.closure$array = closure$array;
+      ByteIterator.call(this);
+      this.index = 0;
+    }
+    byteArrayIterator$ObjectLiteral.prototype.hasNext = function () {
+      return this.index < this.closure$array.length;
+    };
+    byteArrayIterator$ObjectLiteral.prototype.nextByte = function () {
+      var tmp$;
+      if (this.index < this.closure$array.length) {
+        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
+      } else
+        throw new NoSuchElementException(this.index.toString());
+    };
+    byteArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [ByteIterator]};
+    function byteArrayIterator(array) {
+      return new byteArrayIterator$ObjectLiteral(array);
+    }
+    function shortArrayIterator$ObjectLiteral(closure$array) {
+      this.closure$array = closure$array;
+      ShortIterator.call(this);
+      this.index = 0;
+    }
+    shortArrayIterator$ObjectLiteral.prototype.hasNext = function () {
+      return this.index < this.closure$array.length;
+    };
+    shortArrayIterator$ObjectLiteral.prototype.nextShort = function () {
+      var tmp$;
+      if (this.index < this.closure$array.length) {
+        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
+      } else
+        throw new NoSuchElementException(this.index.toString());
+    };
+    shortArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [ShortIterator]};
+    function shortArrayIterator(array) {
+      return new shortArrayIterator$ObjectLiteral(array);
+    }
+    function charArrayIterator$ObjectLiteral(closure$array) {
+      this.closure$array = closure$array;
+      CharIterator.call(this);
+      this.index = 0;
+    }
+    charArrayIterator$ObjectLiteral.prototype.hasNext = function () {
+      return this.index < this.closure$array.length;
+    };
+    charArrayIterator$ObjectLiteral.prototype.nextChar = function () {
+      var tmp$;
+      if (this.index < this.closure$array.length) {
+        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
+      } else
+        throw new NoSuchElementException(this.index.toString());
+    };
+    charArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [CharIterator]};
+    function charArrayIterator(array) {
+      return new charArrayIterator$ObjectLiteral(array);
+    }
+    function intArrayIterator$ObjectLiteral(closure$array) {
+      this.closure$array = closure$array;
+      IntIterator.call(this);
+      this.index = 0;
+    }
+    intArrayIterator$ObjectLiteral.prototype.hasNext = function () {
+      return this.index < this.closure$array.length;
+    };
+    intArrayIterator$ObjectLiteral.prototype.nextInt = function () {
+      var tmp$;
+      if (this.index < this.closure$array.length) {
+        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
+      } else
+        throw new NoSuchElementException(this.index.toString());
+    };
+    intArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [IntIterator]};
+    function intArrayIterator(array) {
+      return new intArrayIterator$ObjectLiteral(array);
+    }
+    function floatArrayIterator$ObjectLiteral(closure$array) {
+      this.closure$array = closure$array;
+      FloatIterator.call(this);
+      this.index = 0;
+    }
+    floatArrayIterator$ObjectLiteral.prototype.hasNext = function () {
+      return this.index < this.closure$array.length;
+    };
+    floatArrayIterator$ObjectLiteral.prototype.nextFloat = function () {
+      var tmp$;
+      if (this.index < this.closure$array.length) {
+        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
+      } else
+        throw new NoSuchElementException(this.index.toString());
+    };
+    floatArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [FloatIterator]};
+    function floatArrayIterator(array) {
+      return new floatArrayIterator$ObjectLiteral(array);
+    }
+    function doubleArrayIterator$ObjectLiteral(closure$array) {
+      this.closure$array = closure$array;
+      DoubleIterator.call(this);
+      this.index = 0;
+    }
+    doubleArrayIterator$ObjectLiteral.prototype.hasNext = function () {
+      return this.index < this.closure$array.length;
+    };
+    doubleArrayIterator$ObjectLiteral.prototype.nextDouble = function () {
+      var tmp$;
+      if (this.index < this.closure$array.length) {
+        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
+      } else
+        throw new NoSuchElementException(this.index.toString());
+    };
+    doubleArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [DoubleIterator]};
+    function doubleArrayIterator(array) {
+      return new doubleArrayIterator$ObjectLiteral(array);
+    }
+    function longArrayIterator$ObjectLiteral(closure$array) {
+      this.closure$array = closure$array;
+      LongIterator.call(this);
+      this.index = 0;
+    }
+    longArrayIterator$ObjectLiteral.prototype.hasNext = function () {
+      return this.index < this.closure$array.length;
+    };
+    longArrayIterator$ObjectLiteral.prototype.nextLong = function () {
+      var tmp$;
+      if (this.index < this.closure$array.length) {
+        return this.closure$array[tmp$ = this.index, this.index = tmp$ + 1 | 0, tmp$];
+      } else
+        throw new NoSuchElementException(this.index.toString());
+    };
+    longArrayIterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [LongIterator]};
+    function longArrayIterator(array) {
+      return new longArrayIterator$ObjectLiteral(array);
+    }
+    function subSequence(c, startIndex, endIndex) {
+      if (typeof c === 'string') {
+        return c.substring(startIndex, endIndex);
+      } else {
+        return c.subSequence_vux9f0$(startIndex, endIndex);
+      }
+    }
     function captureStack(baseClass, instance) {
       if (Error.captureStackTrace) {
         Error.captureStackTrace(instance);
@@ -1782,6 +2082,12 @@
       return this.c;
     };
     BoxedChar.$metadata$ = {kind: Kind_CLASS, simpleName: 'BoxedChar', interfaces: [Comparable]};
+    function charArrayOf() {
+      var type = 'CharArray';
+      var array = new Uint16Array(arguments);
+      array.$type$ = type;
+      return array;
+    }
     function CoroutineImpl(resultContinuation) {
       this.resultContinuation_0 = resultContinuation;
       this.state_0 = 0;
@@ -2036,6 +2342,9 @@
         array[index] = null;
       }
       return array;
+    }
+    function listOf(element) {
+      return arrayListOf_0([element]);
     }
     function arrayCopy(source, destination, destinationOffset, startIndex, endIndex) {
       AbstractList$Companion_getInstance().checkRangeIndexes_cub51b$(startIndex, endIndex, source.length);
@@ -2437,6 +2746,21 @@
       return index;
     };
     ArrayList.$metadata$ = {kind: Kind_CLASS, simpleName: 'ArrayList', interfaces: [RandomAccess, AbstractMutableList, MutableList]};
+    function ArrayList_init($this) {
+      $this = $this || Object.create(ArrayList.prototype);
+      ArrayList.call($this, []);
+      return $this;
+    }
+    function ArrayList_init_0(initialCapacity, $this) {
+      $this = $this || Object.create(ArrayList.prototype);
+      ArrayList.call($this, []);
+      return $this;
+    }
+    function ArrayList_init_1(elements, $this) {
+      $this = $this || Object.create(ArrayList.prototype);
+      ArrayList.call($this, copyToArray(elements));
+      return $this;
+    }
     var _stableSortingIsSupported;
     var EqualityComparator$HashCode_instance = null;
     function RandomAccess() {
@@ -2493,6 +2817,9 @@
     };
     BufferedOutputToConsoleLog.$metadata$ = {kind: Kind_CLASS, simpleName: 'BufferedOutputToConsoleLog', interfaces: [BufferedOutput]};
     var output;
+    function print(message) {
+      output.print_s8jyv4$(message);
+    }
     function SafeContinuation(delegate, initialResult) {
       this.delegate_0 = delegate;
       this.result_0 = initialResult;
@@ -3207,6 +3534,11 @@
       return compareTo(a, b, true);
     }
     var STRING_CASE_INSENSITIVE_ORDER;
+    function regionMatches($receiver, thisOffset, other, otherOffset, length, ignoreCase) {
+      if (ignoreCase === void 0)
+        ignoreCase = false;
+      return regionMatchesImpl($receiver, thisOffset, other, otherOffset, length, ignoreCase);
+    }
     var MAX_BYTES_PER_CHAR;
     var REPLACEMENT_BYTE_SEQUENCE;
     var REPLACEMENT_CHAR;
@@ -3448,14 +3780,62 @@
       }
       return EmptyList_instance;
     }
+    function ArrayAsCollection(values, isVarargs) {
+      this.values = values;
+      this.isVarargs = isVarargs;
+    }
+    Object.defineProperty(ArrayAsCollection.prototype, 'size', {configurable: true, get: function () {
+      return this.values.length;
+    }});
+    ArrayAsCollection.prototype.isEmpty = function () {
+      return this.values.length === 0;
+    };
+    ArrayAsCollection.prototype.contains_11rb$ = function (element) {
+      return contains(this.values, element);
+    };
+    ArrayAsCollection.prototype.containsAll_brywnq$ = function (elements) {
+      var all$result;
+      all$break: do {
+        var tmp$;
+        if (Kotlin.isType(elements, Collection) && elements.isEmpty()) {
+          all$result = true;
+          break all$break;
+        }
+        tmp$ = elements.iterator();
+        while (tmp$.hasNext()) {
+          var element = tmp$.next();
+          if (!this.contains_11rb$(element)) {
+            all$result = false;
+            break all$break;
+          }
+        }
+        all$result = true;
+      }
+       while (false);
+      return all$result;
+    };
+    ArrayAsCollection.prototype.iterator = function () {
+      return Kotlin.arrayIterator(this.values);
+    };
+    ArrayAsCollection.prototype.toArray = function () {
+      var $receiver = this.values;
+      return this.isVarargs ? $receiver : $receiver.slice();
+    };
+    ArrayAsCollection.$metadata$ = {kind: Kind_CLASS, simpleName: 'ArrayAsCollection', interfaces: [Collection]};
     function emptyList() {
       return EmptyList_getInstance();
     }
     function listOf_0(elements) {
       return elements.length > 0 ? asList(elements) : emptyList();
     }
+    function arrayListOf_0(elements) {
+      return elements.length === 0 ? ArrayList_init() : ArrayList_init_1(new ArrayAsCollection(elements, true));
+    }
     function get_lastIndex_12($receiver) {
       return $receiver.size - 1 | 0;
+    }
+    function collectionSizeOrDefault($receiver, default_0) {
+      return Kotlin.isType($receiver, Collection) ? $receiver.size : default_0;
     }
     var EmptyMap_instance = null;
     function removeAll_3($receiver, predicate) {
@@ -3498,6 +3878,9 @@
         return false;
       }
     }
+    function Sequence() {
+    }
+    Sequence.$metadata$ = {kind: Kind_INTERFACE, simpleName: 'Sequence', interfaces: []};
     var State_NotReady;
     var State_ManyNotReady;
     var State_ManyReady;
@@ -3823,8 +4206,215 @@
       else
         $receiver.append_gw00v9$(toString(element));
     }
+    function equals_1($receiver, other, ignoreCase) {
+      if (ignoreCase === void 0)
+        ignoreCase = false;
+      if ($receiver === other)
+        return true;
+      if (!ignoreCase)
+        return false;
+      var thisUpper = uppercaseChar($receiver);
+      var otherUpper = uppercaseChar(other);
+      var tmp$ = thisUpper === otherUpper;
+      if (!tmp$) {
+        tmp$ = String.fromCharCode(thisUpper).toLowerCase().charCodeAt(0) === String.fromCharCode(otherUpper).toLowerCase().charCodeAt(0);
+      }
+      return tmp$;
+    }
     function get_lastIndex_13($receiver) {
       return $receiver.length - 1 | 0;
+    }
+    function substring_3($receiver, range) {
+      return Kotlin.subSequence($receiver, range.start, range.endInclusive + 1 | 0).toString();
+    }
+    function regionMatchesImpl($receiver, thisOffset, other, otherOffset, length, ignoreCase) {
+      if (otherOffset < 0 || thisOffset < 0 || thisOffset > ($receiver.length - length | 0) || otherOffset > (other.length - length | 0)) {
+        return false;
+      }
+      for (var index = 0; index < length; index++) {
+        if (!equals_1($receiver.charCodeAt(thisOffset + index | 0), other.charCodeAt(otherOffset + index | 0), ignoreCase))
+          return false;
+      }
+      return true;
+    }
+    function indexOfAny($receiver, chars, startIndex, ignoreCase) {
+      if (startIndex === void 0)
+        startIndex = 0;
+      if (ignoreCase === void 0)
+        ignoreCase = false;
+      var tmp$, tmp$_0;
+      if (!ignoreCase && chars.length === 1 && typeof $receiver === 'string') {
+        var char = single_7(chars);
+        return $receiver.indexOf(String.fromCharCode(char), startIndex);
+      }
+      tmp$ = coerceAtLeast_2(startIndex, 0);
+      tmp$_0 = get_lastIndex_13($receiver);
+      loop_label: for (var index = tmp$; index <= tmp$_0; index++) {
+        var charAtIndex = $receiver.charCodeAt(index);
+        var any$result;
+        any$break: do {
+          var tmp$_1;
+          for (tmp$_1 = 0; tmp$_1 !== chars.length; ++tmp$_1) {
+            var element = unboxChar(chars[tmp$_1]);
+            if (equals_1(unboxChar(toBoxedChar(element)), charAtIndex, ignoreCase)) {
+              any$result = true;
+              break any$break;
+            }
+          }
+          any$result = false;
+        }
+         while (false);
+        if (any$result)
+          return index;
+      }
+      return -1;
+    }
+    function indexOf_15($receiver, other, startIndex, endIndex, ignoreCase, last) {
+      if (last === void 0)
+        last = false;
+      var tmp$, tmp$_0;
+      var indices = !last ? new IntRange(coerceAtLeast_2(startIndex, 0), coerceAtMost_2(endIndex, $receiver.length)) : downTo_4(coerceAtMost_2(startIndex, get_lastIndex_13($receiver)), coerceAtLeast_2(endIndex, 0));
+      if (typeof $receiver === 'string' && typeof other === 'string') {
+        tmp$ = indices.iterator();
+        while (tmp$.hasNext()) {
+          var index = tmp$.next();
+          if (regionMatches(other, 0, $receiver, index, other.length, ignoreCase))
+            return index;
+        }
+      } else {
+        tmp$_0 = indices.iterator();
+        while (tmp$_0.hasNext()) {
+          var index_0 = tmp$_0.next();
+          if (regionMatchesImpl(other, 0, $receiver, index_0, other.length, ignoreCase))
+            return index_0;
+        }
+      }
+      return -1;
+    }
+    function indexOf_17($receiver, string, startIndex, ignoreCase) {
+      if (startIndex === void 0)
+        startIndex = 0;
+      if (ignoreCase === void 0)
+        ignoreCase = false;
+      return ignoreCase || !(typeof $receiver === 'string') ? indexOf_15($receiver, string, startIndex, $receiver.length, ignoreCase) : $receiver.indexOf(string, startIndex);
+    }
+    function DelimitedRangesSequence(input, startIndex, limit, getNextMatch) {
+      this.input_0 = input;
+      this.startIndex_0 = startIndex;
+      this.limit_0 = limit;
+      this.getNextMatch_0 = getNextMatch;
+    }
+    function DelimitedRangesSequence$iterator$ObjectLiteral(this$DelimitedRangesSequence) {
+      this.this$DelimitedRangesSequence = this$DelimitedRangesSequence;
+      this.nextState = -1;
+      this.currentStartIndex = coerceIn_2(this$DelimitedRangesSequence.startIndex_0, 0, this$DelimitedRangesSequence.input_0.length);
+      this.nextSearchIndex = this.currentStartIndex;
+      this.nextItem = null;
+      this.counter = 0;
+    }
+    DelimitedRangesSequence$iterator$ObjectLiteral.prototype.calcNext_0 = function () {
+      if (this.nextSearchIndex < 0) {
+        this.nextState = 0;
+        this.nextItem = null;
+      } else {
+        if (this.this$DelimitedRangesSequence.limit_0 > 0 && (this.counter = this.counter + 1 | 0, this.counter) >= this.this$DelimitedRangesSequence.limit_0 || this.nextSearchIndex > this.this$DelimitedRangesSequence.input_0.length) {
+          this.nextItem = new IntRange(this.currentStartIndex, get_lastIndex_13(this.this$DelimitedRangesSequence.input_0));
+          this.nextSearchIndex = -1;
+        } else {
+          var match = this.this$DelimitedRangesSequence.getNextMatch_0(this.this$DelimitedRangesSequence.input_0, this.nextSearchIndex);
+          if (match == null) {
+            this.nextItem = new IntRange(this.currentStartIndex, get_lastIndex_13(this.this$DelimitedRangesSequence.input_0));
+            this.nextSearchIndex = -1;
+          } else {
+            var index = match.component1(), length = match.component2();
+            this.nextItem = until_4(this.currentStartIndex, index);
+            this.currentStartIndex = index + length | 0;
+            this.nextSearchIndex = this.currentStartIndex + (length === 0 ? 1 : 0) | 0;
+          }
+        }
+        this.nextState = 1;
+      }
+    };
+    DelimitedRangesSequence$iterator$ObjectLiteral.prototype.next = function () {
+      var tmp$;
+      if (this.nextState === -1)
+        this.calcNext_0();
+      if (this.nextState === 0)
+        throw NoSuchElementException_init();
+      var result = Kotlin.isType(tmp$ = this.nextItem, IntRange) ? tmp$ : throwCCE_0();
+      this.nextItem = null;
+      this.nextState = -1;
+      return result;
+    };
+    DelimitedRangesSequence$iterator$ObjectLiteral.prototype.hasNext = function () {
+      if (this.nextState === -1)
+        this.calcNext_0();
+      return this.nextState === 1;
+    };
+    DelimitedRangesSequence$iterator$ObjectLiteral.$metadata$ = {kind: Kind_CLASS, interfaces: [Iterator]};
+    DelimitedRangesSequence.prototype.iterator = function () {
+      return new DelimitedRangesSequence$iterator$ObjectLiteral(this);
+    };
+    DelimitedRangesSequence.$metadata$ = {kind: Kind_CLASS, simpleName: 'DelimitedRangesSequence', interfaces: [Sequence]};
+    function rangesDelimitedBy$lambda(closure$delimiters, closure$ignoreCase) {
+      return function ($receiver, currentIndex) {
+        var it = indexOfAny($receiver, closure$delimiters, currentIndex, closure$ignoreCase);
+        return it < 0 ? null : to(it, 1);
+      };
+    }
+    function rangesDelimitedBy($receiver, delimiters, startIndex, ignoreCase, limit) {
+      if (startIndex === void 0)
+        startIndex = 0;
+      if (ignoreCase === void 0)
+        ignoreCase = false;
+      if (limit === void 0)
+        limit = 0;
+      requireNonNegativeLimit(limit);
+      return new DelimitedRangesSequence($receiver, startIndex, limit, rangesDelimitedBy$lambda(delimiters, ignoreCase));
+    }
+    function requireNonNegativeLimit(limit) {
+      if (!(limit >= 0)) {
+        var message = 'Limit must be non-negative, but was ' + limit;
+        throw IllegalArgumentException_init_0(message.toString());
+      }
+    }
+    function split_0($receiver, delimiters, ignoreCase, limit) {
+      if (ignoreCase === void 0)
+        ignoreCase = false;
+      if (limit === void 0)
+        limit = 0;
+      if (delimiters.length === 1) {
+        return split_1($receiver, String.fromCharCode(delimiters[0]), ignoreCase, limit);
+      }
+      var $receiver_0 = asIterable_10(rangesDelimitedBy($receiver, delimiters, void 0, ignoreCase, limit));
+      var destination = ArrayList_init_0(collectionSizeOrDefault($receiver_0, 10));
+      var tmp$;
+      tmp$ = $receiver_0.iterator();
+      while (tmp$.hasNext()) {
+        var item = tmp$.next();
+        destination.add_11rb$(substring_3($receiver, item));
+      }
+      return destination;
+    }
+    function split_1($receiver, delimiter, ignoreCase, limit) {
+      requireNonNegativeLimit(limit);
+      var currentOffset = 0;
+      var nextIndex = indexOf_17($receiver, delimiter, currentOffset, ignoreCase);
+      if (nextIndex === -1 || limit === 1) {
+        return listOf($receiver.toString());
+      }
+      var isLimited = limit > 0;
+      var result = ArrayList_init_0(isLimited ? coerceAtMost_2(limit, 10) : 10);
+      do {
+        result.add_11rb$(Kotlin.subSequence($receiver, currentOffset, nextIndex).toString());
+        currentOffset = nextIndex + delimiter.length | 0;
+        if (isLimited && result.size === (limit - 1 | 0))
+          break;
+        nextIndex = indexOf_17($receiver, delimiter, currentOffset, ignoreCase);
+      }
+       while (nextIndex !== -1);
+      result.add_11rb$(Kotlin.subSequence($receiver, currentOffset, $receiver.length).toString());
+      return result;
     }
     var Typography_instance = null;
     var Duration$Companion_instance = null;
@@ -3937,6 +4527,35 @@
       this.name = 'NotImplementedError';
     }
     NotImplementedError.$metadata$ = {kind: Kind_CLASS, simpleName: 'NotImplementedError', interfaces: [Error_0]};
+    function Pair(first, second) {
+      this.first = first;
+      this.second = second;
+    }
+    Pair.prototype.toString = function () {
+      return '(' + this.first + ', ' + this.second + ')';
+    };
+    Pair.$metadata$ = {kind: Kind_CLASS, simpleName: 'Pair', interfaces: [Serializable]};
+    Pair.prototype.component1 = function () {
+      return this.first;
+    };
+    Pair.prototype.component2 = function () {
+      return this.second;
+    };
+    Pair.prototype.copy_xwzc9p$ = function (first, second) {
+      return new Pair(first === void 0 ? this.first : first, second === void 0 ? this.second : second);
+    };
+    Pair.prototype.hashCode = function () {
+      var result = 0;
+      result = result * 31 + Kotlin.hashCode(this.first) | 0;
+      result = result * 31 + Kotlin.hashCode(this.second) | 0;
+      return result;
+    };
+    Pair.prototype.equals = function (other) {
+      return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.first, other.first) && Kotlin.equals(this.second, other.second)))));
+    };
+    function to($receiver, that) {
+      return new Pair($receiver, that);
+    }
     var UByte$Companion_instance = null;
     var UInt$Companion_instance = null;
     var UIntRange$Companion_instance = null;
@@ -3947,6 +4566,7 @@
     var UShort$Companion_instance = null;
     var package$kotlin = _.kotlin || (_.kotlin = {});
     var package$collections = package$kotlin.collections || (package$kotlin.collections = {});
+    package$collections.contains_mjy6jw$ = contains;
     package$collections.get_lastIndex_m7z4lg$ = get_lastIndex;
     package$collections.indexOf_mjy6jw$ = indexOf;
     package$collections.get_indices_m7z4lg$ = get_indices;
@@ -3954,15 +4574,28 @@
     package$ranges.reversed_zf1xzc$ = reversed_9;
     package$collections.lastIndexOf_mjy6jw$ = lastIndexOf;
     package$collections.single_us0mfu$ = single;
+    package$collections.single_355ntz$ = single_7;
     package$kotlin.IllegalArgumentException_init_pdl1vj$ = IllegalArgumentException_init_0;
     package$collections.emptyList_287e2$ = emptyList;
+    package$collections.ArrayList_init_287e2$ = ArrayList_init;
+    package$ranges.coerceAtLeast_dqglrj$ = coerceAtLeast_2;
+    package$ranges.coerceAtMost_dqglrj$ = coerceAtMost_2;
+    package$collections.ArrayList_init_ww73n8$ = ArrayList_init_0;
     package$kotlin.NoSuchElementException_init = NoSuchElementException_init;
     package$kotlin.UnsupportedOperationException_init_pdl1vj$ = UnsupportedOperationException_init_0;
+    package$collections.listOf_mh5how$ = listOf;
+    package$collections.collectionSizeOrDefault_ba2ldo$ = collectionSizeOrDefault;
     package$collections.get_lastIndex_55thoc$ = get_lastIndex_12;
     package$collections.Collection = Collection;
     package$collections.joinTo_gcc71v$ = joinTo_8;
     package$collections.joinToString_fmv235$ = joinToString_8;
     var package$text = package$kotlin.text || (package$kotlin.text = {});
+    package$ranges.downTo_dqglrj$ = downTo_4;
+    package$ranges.until_dqglrj$ = until_4;
+    package$ranges.coerceIn_e4yvb3$ = coerceIn_2;
+    var package$sequences = package$kotlin.sequences || (package$kotlin.sequences = {});
+    package$sequences.Sequence = Sequence;
+    package$sequences.asIterable_veqyi0$ = asIterable_10;
     package$text.get_lastIndex_gw00vp$ = get_lastIndex_13;
     package$text.StringBuilder_init = StringBuilder_init_1;
     var package$js = package$kotlin.js || (package$kotlin.js = {});
@@ -3977,9 +4610,14 @@
     package$collections.MutableIterator = MutableIterator;
     package$collections.ListIterator = ListIterator;
     package$collections.MutableListIterator = MutableListIterator;
+    package$collections.ByteIterator = ByteIterator;
     package$collections.CharIterator = CharIterator;
+    package$collections.ShortIterator = ShortIterator;
     package$collections.IntIterator = IntIterator;
     package$collections.LongIterator = LongIterator;
+    package$collections.FloatIterator = FloatIterator;
+    package$collections.DoubleIterator = DoubleIterator;
+    package$collections.BooleanIterator = BooleanIterator;
     package$ranges.CharProgressionIterator = CharProgressionIterator;
     package$ranges.IntProgressionIterator = IntProgressionIterator;
     package$ranges.LongProgressionIterator = LongProgressionIterator;
@@ -4000,8 +4638,19 @@
     var package$internal = package$kotlin.internal || (package$kotlin.internal = {});
     package$internal.getProgressionLastElement_qt1dr2$ = getProgressionLastElement;
     package$internal.getProgressionLastElement_b9bd0d$ = getProgressionLastElement_0;
+    _.arrayIterator = arrayIterator;
+    _.booleanArrayIterator = booleanArrayIterator;
+    _.byteArrayIterator = byteArrayIterator;
+    _.shortArrayIterator = shortArrayIterator;
+    _.charArrayIterator = charArrayIterator;
+    _.intArrayIterator = intArrayIterator;
+    _.floatArrayIterator = floatArrayIterator;
+    _.doubleArrayIterator = doubleArrayIterator;
+    _.longArrayIterator = longArrayIterator;
+    _.subSequence = subSequence;
     _.captureStack = captureStack;
     _.BoxedChar = BoxedChar;
+    _.charArrayOf = charArrayOf;
     var package$coroutines = package$kotlin.coroutines || (package$kotlin.coroutines = {});
     package$coroutines.CoroutineImpl = CoroutineImpl;
     Object.defineProperty(package$coroutines, 'CompletedContinuation', {get: CompletedContinuation_getInstance});
@@ -4030,12 +4679,14 @@
     package$collections.copyToExistingArrayImpl = copyToArrayImpl_0;
     package$collections.AbstractMutableCollection = AbstractMutableCollection;
     package$collections.AbstractMutableList = AbstractMutableList;
+    package$collections.ArrayList_init_mqih57$ = ArrayList_init_1;
     package$collections.ArrayList = ArrayList;
     package$collections.RandomAccess = RandomAccess;
     package$io.BaseOutput = BaseOutput;
     package$io.NodeJsOutput = NodeJsOutput;
     package$io.BufferedOutput = BufferedOutput;
     package$io.BufferedOutputToConsoleLog = BufferedOutputToConsoleLog;
+    package$io.print_s8jyv4$ = print;
     package$coroutines.SafeContinuation_init_wj8d80$ = SafeContinuation_init;
     package$coroutines.SafeContinuation = SafeContinuation;
     _.throwNPE = throwNPE;
@@ -4071,12 +4722,14 @@
     package$text.concatToString_355ntz$ = concatToString;
     package$text.concatToString_wlitf7$ = concatToString_0;
     package$text.compareTo_7epoxm$ = compareTo;
+    package$text.regionMatches_h3ii2q$ = regionMatches;
     package$collections.AbstractCollection = AbstractCollection;
     Object.defineProperty(AbstractList, 'Companion', {get: AbstractList$Companion_getInstance});
     package$collections.AbstractList = AbstractList;
     Object.defineProperty(package$collections, 'EmptyIterator', {get: EmptyIterator_getInstance});
     Object.defineProperty(package$collections, 'EmptyList', {get: EmptyList_getInstance});
     package$collections.listOf_i5x0yv$ = listOf_0;
+    package$collections.arrayListOf_i5x0yv$ = arrayListOf_0;
     package$collections.removeAll_uhyeqt$ = removeAll_3;
     package$collections.removeAll_qafx1e$ = removeAll_4;
     package$coroutines.Continuation = Continuation;
@@ -4097,11 +4750,20 @@
     package$intrinsics.CoroutineSingletons = CoroutineSingletons;
     package$reflect.KClassifier = KClassifier;
     package$text.appendElement_k2zgzt$ = appendElement_1;
+    package$text.equals_4lte5s$ = equals_1;
+    package$text.substring_i511yc$ = substring_3;
+    package$text.regionMatchesImpl_4c7s8r$ = regionMatchesImpl;
+    package$text.indexOfAny_junqau$ = indexOfAny;
+    package$text.indexOf_l5u8uk$ = indexOf_17;
+    package$text.requireNonNegativeLimit_kcn2v3$ = requireNonNegativeLimit;
+    package$text.split_o64adg$ = split_0;
     package$kotlin.createFailure_tcv7n7$ = createFailure;
     Object.defineProperty(Result, 'Companion', {get: Result$Companion_getInstance});
     Result.Failure = Result$Failure;
     package$kotlin.throwOnFailure_iacion$ = throwOnFailure;
     package$kotlin.NotImplementedError = NotImplementedError;
+    package$kotlin.Pair = Pair;
+    package$kotlin.to_ujzrz7$ = to;
     CoroutineContext$Element.prototype.plus_1fupul$ = CoroutineContext.prototype.plus_1fupul$;
     ContinuationInterceptor.prototype.fold_3cc69b$ = CoroutineContext$Element.prototype.fold_3cc69b$;
     ContinuationInterceptor.prototype.plus_1fupul$ = CoroutineContext$Element.prototype.plus_1fupul$;

@@ -28,7 +28,20 @@ class Parser {
              * @param notation FEN notation
              */
             fun fen(notation: String): Position {
-                return TODO()
+                val (ranks, sideToMove, castlingRights, enPassantTargetSquare, halfMoveClock, fullMoveClock) = notation.split(
+                    ' '
+                );
+
+                val pieces = ranks.split('/').map {
+                    var counter = 0;
+                    it.forEachIndexed { index, c ->
+                        counter += if ("$c".toRegex().containsMatchIn("[0-9]")) c.code else 1
+                    }
+                }
+
+                print(notation.split('/'))
+                val position = Position()
+                return position
             }
 
             /**
@@ -41,3 +54,6 @@ class Parser {
         }
     }
 }
+
+operator fun <T> List<T>.component6() = this[5];
+operator fun <T> List<T>.component7() = this[6];
