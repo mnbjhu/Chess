@@ -54,6 +54,7 @@ kotlin {
                 // Koin for Ktor
                 implementation("io.insert-koin:koin-ktor:$koinVersion")
                 implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+                implementation("io.insert-koin:koin-core:$koinVersion")
                 // Ktor
                 implementation("io.ktor:ktor-server-netty:$ktorVersion")
                 implementation("io.ktor:ktor-server-html-builder-jvm:$ktorVersion")
