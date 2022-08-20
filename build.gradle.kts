@@ -70,6 +70,7 @@ kotlin {
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react:18.0.0-pre.332-kotlin-1.6.21")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.0.0-pre.332-kotlin-1.6.21")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.9.0-pre.332-kotlin-1.6.21")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom:6.3.0-pre.371")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 // Koin Core features
                 implementation("io.insert-koin:koin-core:$koinVersion")
