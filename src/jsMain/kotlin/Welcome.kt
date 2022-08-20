@@ -1,14 +1,14 @@
 import csstype.px
-import csstype.rgb
 import react.FC
 import react.Props
 import emotion.react.css
-import kotlinx.browser.window
+import game.Chess
 import position.Parser
 import position.Position
 import react.dom.html.InputType
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
+import react.dom.html.ReactHTML.pre
 import react.useState
 
 external interface WelcomeProps : Props {
@@ -17,12 +17,15 @@ external interface WelcomeProps : Props {
 
 val Welcome = FC<WelcomeProps> { props ->
     var name by useState(props.name)
+    val chess = Chess()
 
-    div {
+    Parser.Companion.ToPosition.fen(Position.INITIAL_POSITION, { str -> console.log(str) })
+
+    pre {
         css {
             padding = 5.px
         }
-        +JSON.stringify(Parser.Companion.toPosition.fen(Position.Companion.INITIAL_POSITION));
+        +JSON.stringify(chess.board, null, 2)
     }
     input {
         css {

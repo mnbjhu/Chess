@@ -15,7 +15,7 @@ val ktorVersion: String by project
 repositories {
     mavenCentral()
     maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
-    maven (url = "https://jitpack.io")
+    maven(url = "https://jitpack.io")
 }
 
 kotlin {
@@ -37,8 +37,8 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting{
-            dependencies{
+        val commonMain by getting {
+            dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
             }
         }
@@ -49,11 +49,6 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-<<<<<<< HEAD
-                
-                implementation("io.ktor:ktor-server-netty:2.0.1")
-                implementation("io.ktor:ktor-server-html-builder-jvm:2.0.1")
-=======
                 implementation("com.github.mnbjhu:KotlinRedisGraph:0.3.0")
 
                 // Koin for Ktor
@@ -62,7 +57,6 @@ kotlin {
                 // Ktor
                 implementation("io.ktor:ktor-server-netty:$ktorVersion")
                 implementation("io.ktor:ktor-server-html-builder-jvm:$ktorVersion")
->>>>>>> master
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
                 // Logger
@@ -82,8 +76,8 @@ kotlin {
 // Koin Test features
             }
         }
-        val jsTest by getting{
-            dependencies{ implementation("io.insert-koin:koin-test:$koinVersion") }
+        val jsTest by getting {
+            dependencies { implementation("io.insert-koin:koin-test:$koinVersion") }
         }
     }
 }

@@ -3,6 +3,4 @@ package game
 import position.Parser
 import position.Position
 
-class Chess {
-   
-}
+data class Chess(val board: Position = Parser.Companion.ToPosition.fen(Position.INITIAL_POSITION))
