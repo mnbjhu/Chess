@@ -1,39 +1,17 @@
 package org.example.application
 
-import io.ktor.http.HttpStatusCode
-import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.html.*
-import io.ktor.server.http.content.*
 import io.ktor.server.netty.Netty
-import io.ktor.server.routing.*
-import kotlinx.html.*
-
-fun HTML.index() {
-    head {
-        title("Hello from Ktor!")
-    }
-
-    body {
-        div {
-            id = "root"
-        }
-        script(src = "/static/Chess.js") {}
-    }
-}
+import org.example.application.plugins.installPlugins
+import org.example.application.routes.addRoutes
 
 fun main() {
     embeddedServer(Netty, port = 8080, host = "127.0.0.1") {
-        routing {
-            get("/") {
-                call.respondHtml(HttpStatusCode.OK, HTML::index)
-            }
-            get("/login") {
-                call.respondHtml(HttpStatusCode.OK, HTML::index)
-            }
-            static("/static") {
-                resources()
-            }
-        }
+        installPlugins()
+        addRoutes()
+
     }.start(wait = true)
 }
+
+data class Session(val userId: Long, val sessionKey: String): Principal

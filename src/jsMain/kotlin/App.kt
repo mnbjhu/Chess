@@ -12,12 +12,11 @@ external interface AppProps : Props {
 }
 
 val App = FC<AppProps> {
-    Parser.Companion.ToPosition.fen(Position.INITIAL_POSITION, { str -> console.log(str) })
-
+    Parser.Companion.ToPosition.fen(Position.INITIAL_POSITION) { str -> console.log(str) }
     BrowserRouter {
         Routes {
             Route {
-                path = "/login"
+                path = "/app/login"
                 element = createElement(LoginPage)
             }
         }

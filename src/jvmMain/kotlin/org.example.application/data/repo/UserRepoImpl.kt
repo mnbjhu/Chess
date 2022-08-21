@@ -2,6 +2,7 @@ package org.example.application.data.repo
 
 import functions.math.Id
 import io.ktor.util.*
+import models.LoginDetails
 import models.User
 import org.example.application.data.db.Database
 import org.example.application.data.db.DatabaseImpl
@@ -9,13 +10,14 @@ import org.example.application.data.db.schema.UserNode
 import org.example.application.data.db.schema.UserSession
 import org.example.application.domain.exceptions.user.UserException
 import org.example.application.domain.repos.UserRepo
+import org.mindrot.jbcrypt.BCrypt
 import paths.minus
 import kotlin.random.Random
 
 class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
     private val graph = database.getInstance()
-    private fun UserNode.hasDetails(details: User.LoginDetails) = (username eq details.username) and (passwordHash eq hash(details.password))
-    override fun createUser(loginDetails: User.LoginDetails): Long{
+    private fun UserNode.hasDetails(details: LoginDetails) = (username eq details.username) and (passwordHash eq hash(details.password))
+    override fun createUser(loginDetails: LoginDetails): Long{
         val usernameAvailable = graph.query {
             val user = match(UserNode())
             where((user.username eq loginDetails.username))
@@ -31,13 +33,20 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
                 where((user.username eq loginDetails.username))
                 result(Id(user))
             }.first()
-        } else throw UserException.UsernameIsTakenException()
+        } else throw UserException.UsernameIsTakenException
     }
-    override fun validateLoginDetails(details: User.LoginDetails) = graph.query {
-        val user = match(UserNode())
-        where(user.hasDetails(details))
-        result(user.username)
-    }.isNotEmpty()
+    override fun validateLoginDetails(details: LoginDetails): Long {
+        val (userId, passwordHash) = graph.query {
+            val user = match(UserNode())
+            where(user.username eq details.username)
+            val id = Id(user)
+            result(id, user.passwordHash){
+                id() to user.passwordHash()
+            }
+        }.firstOrNull() ?: throw UserException.InvalidLoginDetailsException
+        if(!BCrypt.checkpw(details.password, passwordHash)) throw UserException.InvalidLoginDetailsException
+        return userId
+    }
     override fun validateUserSession(userId: Long, sessionKey: String) =
         graph.query {
             val (user, session) = match(UserNode() - { authorizedBy } - UserSession() ).nodes()
@@ -46,7 +55,7 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
         }.isNotEmpty()
 
     override fun createUserSession(userId: Long): String {
-        val sessionKey = Random.nextBytes(64)
+        val sessionKey = Random.nextBytes(128)
             .joinToString { it.toInt().toChar().toString() }
         graph.create(UserSession::class){
             key[sessionKey]
@@ -65,7 +74,7 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
                 where(session.id eq userId)
                 delete(session)
             }
-            throw UserException.InvalidLoginDetailsException()
+            throw UserException.InvalidLoginDetailsException
         }
     }
 
@@ -82,9 +91,15 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
             delete(session)
         }
     }
+
+    override fun getUserId(username: String) = graph.query {
+        val user = match(UserNode())
+        where(user.username eq username)
+        result(Id(user))
+    }.firstOrNull() ?: throw UserException.UsernameNotFoundException(username)
+
     companion object{
         @JvmStatic
-        fun hash(password: String): String =
-            sha1(password.toByteArray()).joinToString(""){ it.toInt().toChar().toString() }
+        private fun hash(password: String) = BCrypt.hashpw(password, BCrypt.gensalt())
     }
 }

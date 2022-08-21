@@ -1,5 +1,5 @@
 plugins {
-    kotlin("multiplatform") version "1.7.0"
+    kotlin("multiplatform") version "1.7.10"
     kotlin("plugin.serialization") version "1.7.10"
     application
 }
@@ -37,9 +37,10 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
+        val commonMain by getting{
+            dependencies{
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.4.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
             }
         }
         val commonTest by getting {
@@ -51,33 +52,49 @@ kotlin {
             dependencies {
                 implementation("com.github.mnbjhu:KotlinRedisGraph:0.3.4")
                 implementation("com.natpryce:konfig:1.6.10.0")
-
                 // Koin for Ktor
-                implementation("io.insert-koin:koin-ktor:$koinVersion")
-                implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
+                //implementation("io.insert-koin:koin-ktor:$koinVersion")
+                //implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
                 // Ktor
-                implementation("io.ktor:ktor-server-netty:$ktorVersion")
-                implementation("io.ktor:ktor-server-html-builder-jvm:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
+                implementation("io.ktor:ktor-server-html-builder-jvm:$ktorVersion")
+                //implementation("io.ktor:ktor-server-core:$ktorVersion")
+                implementation("io.ktor:ktor-server-netty:$ktorVersion")
+                implementation("io.ktor:ktor-server-sessions:$ktorVersion")
+                implementation("io.ktor:ktor-server-auth:$ktorVersion")
                 implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
                 // Logger
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+                implementation("org.mindrot:jbcrypt:0.3m")
+
+
             }
         }
-        val jvmTest by getting
+
         val jsMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom:6.3.0-pre.371")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react:18.0.0-pre.332-kotlin-1.6.21")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.0.0-pre.332-kotlin-1.6.21")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.9.0-pre.332-kotlin-1.6.21")
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom:6.3.0-pre.371")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+
                 // Koin Core features
-                implementation("io.insert-koin:koin-core:$koinVersion")
-// Koin Test features
+                //implementation("io.insert-koin:koin-core:$koinVersion")
             }
         }
+        val jsTest by getting{
+            dependencies{
+                //implementation("io.insert-koin:koin-test:$koinVersion")
+
+            }
+
         val jsTest by getting {
             dependencies { implementation("io.insert-koin:koin-test:$koinVersion") }
         }
