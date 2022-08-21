@@ -8,6 +8,5 @@ import position.Position;
 fun main() {
     val container = document.createElement("div")
     document.body!!.appendChild(container)
-
     createRoot(container).render(App.create())
 }

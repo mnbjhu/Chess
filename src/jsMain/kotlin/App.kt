@@ -17,7 +17,11 @@ val App = FC<AppProps> {
         Routes {
             Route {
                 path = "/app/login"
-                element = createElement(LoginPage)
+                element = createElement(loginPage)
+            }
+            Route{
+                path = "/app/register"
+                element = createElement(signUpPage)
             }
         }
     }

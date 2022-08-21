@@ -6,27 +6,30 @@ import react.dom.html.ReactHTML.div
 import emotion.react.css
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import models.LoginDetails
+import models.User
 import react.*
 import react.dom.html.InputType
 import util.Constants.Colors
+import kotlin.coroutines.CoroutineContext
 
-external interface LoginPageProps : Props{
+external interface SignUpPage : Props{
 
 }
 
-val mainScope = MainScope()
 
 
-val loginPage = FC<LoginPageProps> {
+val signUpPage = FC<LoginPageProps> {
     var username by useState("")
     var password by useState("")
 
     val onSignIn = {
         mainScope.launch {
-            Client.instance.post("http://127.0.0.1:8080/api/login"){
+            Client.instance.post("http://127.0.0.1:8080/api/register"){
                 contentType(ContentType.Application.Json)
                 setBody(LoginDetails(username, password))
             }
@@ -46,7 +49,7 @@ val loginPage = FC<LoginPageProps> {
             backgroundColor = Color(Colors.WHITE.toString())
         }
         div {
-            className = ClassName("login-form")
+            className = ClassName("sign-up-form")
 
             css {
                 width = 75.vh
@@ -96,7 +99,7 @@ val loginPage = FC<LoginPageProps> {
                 }
                 Button {
                     onClick = { onSignIn() }
-                    +"Sign In"
+                    +"Sign Up"
                 }
             }
         }
