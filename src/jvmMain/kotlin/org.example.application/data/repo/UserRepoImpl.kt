@@ -2,6 +2,7 @@ package org.example.application.data.repo
 
 import functions.math.Id
 import io.ktor.util.*
+import models.LoginDetails
 import models.User
 import org.example.application.data.db.Database
 import org.example.application.data.db.DatabaseImpl
@@ -14,8 +15,8 @@ import kotlin.random.Random
 
 class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
     private val graph = database.getInstance()
-    private fun UserNode.hasDetails(details: User.LoginDetails) = (username eq details.username) and (passwordHash eq hash(details.password))
-    override fun createUser(loginDetails: User.LoginDetails): Long{
+    private fun UserNode.hasDetails(details: LoginDetails) = (username eq details.username) and (passwordHash eq hash(details.password))
+    override fun createUser(loginDetails: LoginDetails): Long{
         val usernameAvailable = graph.query {
             val user = match(UserNode())
             where((user.username eq loginDetails.username))
@@ -33,7 +34,7 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
             }.first()
         } else throw UserException.UsernameIsTakenException()
     }
-    override fun validateLoginDetails(details: User.LoginDetails) = graph.query {
+    override fun validateLoginDetails(details: LoginDetails) = graph.query {
         val user = match(UserNode())
         where(user.hasDetails(details))
         result(user.username)

@@ -13,7 +13,7 @@ class DatabaseImpl: Database {
                 name = "ChessServerGraph",
                 host = config[Config.server_host],
                 port = config[Config.server_port],
-                password = config[Config.server_host],
+                password = config[Config.server_pass],
             )
         }
     }
