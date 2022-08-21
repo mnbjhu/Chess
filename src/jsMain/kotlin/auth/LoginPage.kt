@@ -17,13 +17,12 @@ import react.dom.html.InputType
 import util.Constants.Colors
 import kotlin.coroutines.CoroutineContext
 
-
-
 external interface LoginPageProps : Props{
 
 }
 
 val mainScope = MainScope()
+
 
 val LoginPage = FC<LoginPageProps> {
     var username by useState("")
@@ -37,6 +36,7 @@ val LoginPage = FC<LoginPageProps> {
             }
         }
     }
+
 
     div {
         className = ClassName("page-container")
