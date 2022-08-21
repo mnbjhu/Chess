@@ -15,7 +15,7 @@ val ktorVersion: String by project
 repositories {
     mavenCentral()
     maven(url = "https://maven.pkg.jetbrains.space/public/p/kotlinx-html/maven")
-    maven (url = "https://jitpack.io")
+    maven(url = "https://jitpack.io")
 }
 
 kotlin {
@@ -37,8 +37,8 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting{
-            dependencies{
+        val commonMain by getting {
+            dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0-RC")
             }
         }
@@ -71,14 +71,15 @@ kotlin {
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react:18.0.0-pre.332-kotlin-1.6.21")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:18.0.0-pre.332-kotlin-1.6.21")
                 implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.9.0-pre.332-kotlin-1.6.21")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-router-dom:6.3.0-pre.371")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 // Koin Core features
                 implementation("io.insert-koin:koin-core:$koinVersion")
 // Koin Test features
             }
         }
-        val jsTest by getting{
-            dependencies{ implementation("io.insert-koin:koin-test:$koinVersion") }
+        val jsTest by getting {
+            dependencies { implementation("io.insert-koin:koin-test:$koinVersion") }
         }
     }
 }
