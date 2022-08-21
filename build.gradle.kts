@@ -37,8 +37,8 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting{
-            dependencies{
+        val commonMain by getting {
+            dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
             }
@@ -89,22 +89,22 @@ kotlin {
                 //implementation("io.insert-koin:koin-core:$koinVersion")
             }
         }
-        val jsTest by getting{
-            dependencies{
+        val jsTest by getting {
+            dependencies {
                 //implementation("io.insert-koin:koin-test:$koinVersion")
 
             }
 
-        val jsTest by getting {
-            dependencies { implementation("io.insert-koin:koin-test:$koinVersion") }
+            val jsTest by getting {
+                dependencies { implementation("io.insert-koin:koin-test:$koinVersion") }
+            }
         }
     }
-}
 
-application {
-    mainClass.set("org.example.application.ServerKt")
+    application {
+        mainClass.set("org.example.application.ServerKt")
+    }
 }
-
 tasks.named<Copy>("jvmProcessResources") {
     val jsBrowserDistribution = tasks.named("jsBrowserDistribution")
     from(jsBrowserDistribution)
