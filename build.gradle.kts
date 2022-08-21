@@ -49,7 +49,7 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("com.github.mnbjhu:KotlinRedisGraph:0.3.3")
+                implementation("com.github.mnbjhu:KotlinRedisGraph:0.3.4")
                 implementation("com.natpryce:konfig:1.6.10.0")
 
                 // Koin for Ktor
