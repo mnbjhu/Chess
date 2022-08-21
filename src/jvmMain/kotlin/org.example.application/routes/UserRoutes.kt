@@ -1,5 +1,6 @@
 package org.example.application.routes
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
@@ -12,13 +13,6 @@ import org.example.application.data.repo.UserRepoImpl
 import org.example.application.domain.repos.UserRepo
 
 fun Application.addUserRoutes(repo: UserRepo = UserRepoImpl()){
-    installAuth(repo)
-    routing {
-        get("/test") {
-            this
-        }
-    }
-/*
     routing {
         authenticate("auth-session") {
             get("/api/auth"){
@@ -31,35 +25,11 @@ fun Application.addUserRoutes(repo: UserRepo = UserRepoImpl()){
             call.respond(HttpStatusCode.OK)
         }
         post("/api/login") {
-
             val userDetails: LoginDetails = call.receive()
             val userId = repo.validateLoginDetails(userDetails)
             val session = repo.createUserSession(userId)
             call.sessions.set(Session(userId, session))
             call.respondRedirect("/")
-        }
-    }*/
-}
-
-private fun Application.installAuth(repo: UserRepo) {
-    install(Authentication) {
-        session<Session>("auth-session") {
-            validate { session ->
-                if (repo.validateUserSession(session.userId, session.sessionKey)) {
-                    session
-                } else {
-                    null
-                }
-            }
-            challenge {
-                call.respondRedirect("/login")
-            }
-        }
-    }
-    install(Sessions) {
-        cookie<Session>("user_session") {
-            cookie.path = "/"
-            cookie.maxAgeInSeconds = 60
         }
     }
 }

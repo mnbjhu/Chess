@@ -5,6 +5,7 @@ import csstype.*
 import react.dom.html.ReactHTML.div
 import emotion.react.css
 import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -30,7 +31,8 @@ val LoginPage = FC<LoginPageProps> {
 
     val onSignIn = {
         mainScope.launch {
-            Client.instance.request("http://localhost:8080/api/login"){
+            Client.instance.post("http://127.0.0.1:8080/api/login"){
+                contentType(ContentType.Application.Json)
                 setBody(LoginDetails(username, password))
             }
         }

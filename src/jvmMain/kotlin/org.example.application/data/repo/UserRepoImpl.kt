@@ -93,6 +93,6 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
     companion object{
         @JvmStatic
         fun hash(password: String): String =
-            sha1(password.toByteArray()).joinToString(""){ it.toInt().toChar().toString() }
+            sha1(password.toByteArray()).toString()
     }
 }
