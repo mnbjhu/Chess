@@ -49,6 +49,7 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+
             }
         }
         val jvmMain by getting {
@@ -62,7 +63,6 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("io.ktor:ktor-server-html-builder-jvm:$ktorVersion")
                 implementation("io.ktor:ktor-server-core:$ktorVersion")
-
                 implementation("io.ktor:ktor-server-netty:$ktorVersion")
                 implementation("io.ktor:ktor-server-sessions:$ktorVersion")
                 implementation("io.ktor:ktor-server-auth:$ktorVersion")
@@ -74,8 +74,7 @@ kotlin {
         }
         val jvmTest by getting{
             dependencies{
-                implementation("org.jetbrains.kotlin:kotlin-test:1.7.0")
-                implementation("io.ktor:ktor-server-test-host:$ktorVersion")
+                //implementation("org.jetbrains.kotlin:kotlin-test:1.7.0")
 
 
             }
