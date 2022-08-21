@@ -6,7 +6,8 @@ sealed class UserException(
     override val message: String?,
     val statusCode: HttpStatusCode,
     ): Exception(){
+    class UsernameNotFoundException(username: String): UserException("Username not found: $username", HttpStatusCode.NotFound)
     class UserIdNotFoundException(id: Long):UserException("User id not found: $id", HttpStatusCode.NotFound)
-    class UsernameIsTakenException: UserException("Username is already taken", HttpStatusCode.BadRequest)
-    class InvalidLoginDetailsException: UserException("Username or password is incorrect", HttpStatusCode.Unauthorized)
+    object UsernameIsTakenException: UserException("Username is already taken", HttpStatusCode.BadRequest)
+    object InvalidLoginDetailsException: UserException("Username or password is incorrect", HttpStatusCode.Unauthorized)
 }

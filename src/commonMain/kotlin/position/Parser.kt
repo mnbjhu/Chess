@@ -4,7 +4,7 @@ package position
  * into standard chess notation and vice versa */
 class Parser {
     companion object {
-        object toNotation {
+        object ToNotation {
             /**
              * Transform board position into Forsyth-Edwards notation
              * @param position State of the board
@@ -22,13 +22,31 @@ class Parser {
             }
         }
 
-        object toPosition {
+        object ToPosition {
             /**
              * Transform FEN notation into a board Position
              * @param notation FEN notation
              */
-            fun fen(notation: String): Position {
-                return TODO()
+            fun fen(notation: String, cb: (String) -> Unit = {}): Position {
+                val (ranks, sideToMove, castlingRights, enPassantTargetSquare, halfMoveClock, fullMoveClock) = notation.split(
+                    ' '
+                )
+                val expanded: MutableList<List<String>> = mutableListOf();
+
+                ranks.split('/').forEach { pieces ->
+                    var rank = ""
+                    pieces.split("").forEach { piece ->
+                        val _piece = piece[0]
+                        if (_piece.isDigit()) {
+                            for (i in 1.._piece.digitToInt()) rank += _piece
+                        } else rank += piece
+                    }
+                    expanded.add(rank.split(""))
+                }
+
+                cb(expanded.joinToString());
+                val position = Position()
+                return position
             }
 
             /**
@@ -41,3 +59,6 @@ class Parser {
         }
     }
 }
+
+operator fun <T> List<T>.component6() = this[5];
+operator fun <T> List<T>.component7() = this[6];

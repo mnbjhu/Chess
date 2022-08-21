@@ -12,5 +12,7 @@ interface UserRepo {
     fun createUserSession(userId: Long): String
     @Throws(UserException.UserIdNotFoundException::class)
     fun deleteUserSession(userId: Long)
-    fun validateLoginDetails(details: LoginDetails): Boolean
+    @Throws(UserException.UserIdNotFoundException::class)
+    fun getUserId(username: String): Long
+    fun validateLoginDetails(details: LoginDetails): Long
 }

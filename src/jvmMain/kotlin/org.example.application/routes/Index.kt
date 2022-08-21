@@ -9,7 +9,11 @@ import kotlinx.html.*
 
 fun Application.addIndexPage(){
     routing {
-        get("/") {
+        get("/app/login") {
+            call.respondHtml(HttpStatusCode.OK, HTML::index)
+        }
+
+        get("/app/{...}") {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
         }
         static("/static") {

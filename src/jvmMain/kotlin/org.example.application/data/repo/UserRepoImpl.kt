@@ -32,13 +32,13 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
                 where((user.username eq loginDetails.username))
                 result(Id(user))
             }.first()
-        } else throw UserException.UsernameIsTakenException()
+        } else throw UserException.UsernameIsTakenException
     }
     override fun validateLoginDetails(details: LoginDetails) = graph.query {
         val user = match(UserNode())
         where(user.hasDetails(details))
-        result(user.username)
-    }.isNotEmpty()
+        result(Id(user))
+    }.firstOrNull() ?: throw UserException.InvalidLoginDetailsException
     override fun validateUserSession(userId: Long, sessionKey: String) =
         graph.query {
             val (user, session) = match(UserNode() - { authorizedBy } - UserSession() ).nodes()
@@ -66,7 +66,7 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
                 where(session.id eq userId)
                 delete(session)
             }
-            throw UserException.InvalidLoginDetailsException()
+            throw UserException.InvalidLoginDetailsException
         }
     }
 
@@ -83,6 +83,13 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
             delete(session)
         }
     }
+
+    override fun getUserId(username: String) = graph.query {
+        val user = match(UserNode())
+        where(user.username eq username)
+        result(Id(user))
+    }.firstOrNull() ?: throw UserException.UsernameNotFoundException(username)
+
     companion object{
         @JvmStatic
         fun hash(password: String): String =
