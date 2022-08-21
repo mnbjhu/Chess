@@ -6,7 +6,6 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
 import io.ktor.server.netty.Netty
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.html.*
 
@@ -14,6 +13,7 @@ fun HTML.index() {
     head {
         title("Hello from Ktor!")
     }
+
     body {
         div {
             id = "root"
