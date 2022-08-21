@@ -10,6 +10,7 @@ import org.example.application.data.db.schema.UserNode
 import org.example.application.data.db.schema.UserSession
 import org.example.application.domain.exceptions.user.UserException
 import org.example.application.domain.repos.UserRepo
+import org.mindrot.jbcrypt.BCrypt
 import paths.minus
 import kotlin.random.Random
 
@@ -34,11 +35,18 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
             }.first()
         } else throw UserException.UsernameIsTakenException
     }
-    override fun validateLoginDetails(details: LoginDetails) = graph.query {
-        val user = match(UserNode())
-        where(user.hasDetails(details))
-        result(Id(user))
-    }.firstOrNull() ?: throw UserException.InvalidLoginDetailsException
+    override fun validateLoginDetails(details: LoginDetails): Long {
+        val (userId, passwordHash) = graph.query {
+            val user = match(UserNode())
+            where(user.username eq details.username)
+            val id = Id(user)
+            result(id, user.passwordHash){
+                id() to user.passwordHash()
+            }
+        }.firstOrNull() ?: throw UserException.InvalidLoginDetailsException
+        if(!BCrypt.checkpw(details.password, passwordHash)) throw UserException.InvalidLoginDetailsException
+        return userId
+    }
     override fun validateUserSession(userId: Long, sessionKey: String) =
         graph.query {
             val (user, session) = match(UserNode() - { authorizedBy } - UserSession() ).nodes()
@@ -47,7 +55,7 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
         }.isNotEmpty()
 
     override fun createUserSession(userId: Long): String {
-        val sessionKey = Random.nextBytes(64)
+        val sessionKey = Random.nextBytes(128)
             .joinToString { it.toInt().toChar().toString() }
         graph.create(UserSession::class){
             key[sessionKey]
@@ -92,7 +100,6 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
 
     companion object{
         @JvmStatic
-        fun hash(password: String): String =
-            sha1(password.toByteArray()).toString()
+        private fun hash(password: String) = BCrypt.hashpw(password, BCrypt.gensalt())
     }
 }

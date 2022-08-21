@@ -3,7 +3,7 @@ package org.example.application.domain.exceptions.user
 import io.ktor.http.*
 
 sealed class UserException(
-    override val message: String?,
+    override val message: String,
     val statusCode: HttpStatusCode,
     ): Exception(){
     class UsernameNotFoundException(username: String): UserException("Username not found: $username", HttpStatusCode.NotFound)

@@ -10,6 +10,7 @@ import io.ktor.server.sessions.*
 import models.LoginDetails
 import org.example.application.Session
 import org.example.application.data.repo.UserRepoImpl
+import org.example.application.domain.exceptions.user.UserException
 import org.example.application.domain.repos.UserRepo
 
 fun Application.addUserRoutes(repo: UserRepo = UserRepoImpl()){
@@ -26,10 +27,12 @@ fun Application.addUserRoutes(repo: UserRepo = UserRepoImpl()){
         }
         post("/api/login") {
             val userDetails: LoginDetails = call.receive()
-            val userId = repo.validateLoginDetails(userDetails)
-            val session = repo.createUserSession(userId)
-            call.sessions.set(Session(userId, session))
-            call.respondRedirect("/")
+            try {
+                val userId = repo.validateLoginDetails(userDetails)
+                val session = repo.createUserSession(userId)
+                call.sessions.set(Session(userId, session))
+                call.respondRedirect("/")
+            } catch (e: UserException){ call.respondText(e.message, status = e.statusCode) }
         }
     }
 }
