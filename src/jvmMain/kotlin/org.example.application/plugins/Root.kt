@@ -7,4 +7,5 @@ import org.example.application.domain.repos.UserRepo
 fun Application.installPlugins(repo: UserRepo = UserRepoImpl()) {
     installAuth(repo)
     installJson()
+    installWebSockets()
 }
