@@ -55,27 +55,19 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
         }.isNotEmpty()
 
     override fun createUserSession(userId: Long): String {
-        val sessionKey = Random.nextBytes(128)
-            .joinToString { it.toInt().toChar().toString() }
+        val sessionKey = (1..128).map { chars.random() }
+            .joinToString("")
+        deleteUserSession(userId)
         graph.create(UserSession::class){
             key[sessionKey]
             id[userId]
         }
-        val userExists = graph.query {
+        graph.query {
             val (user, session) = match(UserNode(), UserSession())
             where((Id(user) eq userId) and (session.id eq userId) )
             create(user - { authorizedBy } - session)
-            result(user.username)
-        }.isNotEmpty()
-        return if(userExists) sessionKey
-        else {
-            graph.query {
-                val session = match(UserSession())
-                where(session.id eq userId)
-                delete(session)
-            }
-            throw UserException.InvalidLoginDetailsException
         }
+        return sessionKey
     }
 
     override fun deleteUserSession(userId: Long) {
@@ -101,5 +93,7 @@ class UserRepoImpl(database: Database = DatabaseImpl()): UserRepo {
     companion object{
         @JvmStatic
         private fun hash(password: String) = BCrypt.hashpw(password, BCrypt.gensalt())
+        @JvmStatic
+        val chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
     }
 }

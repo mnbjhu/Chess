@@ -15,11 +15,6 @@ import org.example.application.domain.repos.UserRepo
 
 fun Application.addUserRoutes(repo: UserRepo = UserRepoImpl()){
     routing {
-        authenticate("auth-session") {
-            get("/api/auth"){
-                call.respondText("Hello, World!")
-            }
-        }
         post("/api/register") {
             val userDetails: LoginDetails = call.receive()
             repo.createUser(userDetails)
@@ -31,8 +26,8 @@ fun Application.addUserRoutes(repo: UserRepo = UserRepoImpl()){
                 val userId = repo.validateLoginDetails(userDetails)
                 val session = repo.createUserSession(userId)
                 call.sessions.set(Session(userId, session))
-                call.respondRedirect("/")
-            } catch (e: UserException){ call.respondText(e.message, status = e.statusCode) }
+                call.respond(HttpStatusCode.OK)
+            } catch (e: UserException){ call.respond(HttpStatusCode.Unauthorized) }
         }
     }
 }

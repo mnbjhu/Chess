@@ -2,6 +2,7 @@ package org.example.application.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
 import io.ktor.server.routing.*
@@ -12,9 +13,13 @@ fun Application.addIndexPage(){
         get("/app/login") {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
         }
-
-        get("/app/{...}") {
+        get("/app/register") {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
+        }
+        authenticate("auth-session"){
+            get("/app/{...}") {
+                call.respondHtml(HttpStatusCode.OK, HTML::index)
+            }
         }
         static("/static") {
             resources()
@@ -23,15 +28,10 @@ fun Application.addIndexPage(){
 }
 fun HTML.index() {
     head {
-        title("Hello from Ktor!")
+        title("Chess!")
     }
     body {
-        div {
-            +"Hello from Ktor"
-        }
-        div {
-            id = "root"
-        }
+        div { id = "root" }
         script(src = "/static/Chess.js") {}
     }
 }

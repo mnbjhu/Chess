@@ -11,6 +11,11 @@ import kotlinx.coroutines.launch
 import models.LoginDetails
 import react.*
 import react.dom.html.InputType
+import react.dom.html.ReactHTML.nav
+import react.router.Route
+import react.router.Router
+import react.router.Routes
+import react.router.useNavigate
 import util.Constants.Colors
 
 external interface LoginPageProps : Props{
@@ -23,16 +28,21 @@ val mainScope = MainScope()
 val loginPage = FC<LoginPageProps> {
     var username by useState("")
     var password by useState("")
-
+    var loginFailed by useState(false)
+    val nav  = useNavigate()
     val onSignIn = {
         mainScope.launch {
-            Client.instance.post("http://127.0.0.1:8080/api/login"){
+            val response = Client.instance.post("http://127.0.0.1:8080/api/login"){
                 contentType(ContentType.Application.Json)
                 setBody(LoginDetails(username, password))
             }
+            when(response.status){
+                HttpStatusCode.OK -> nav("/app/home")
+                HttpStatusCode.Unauthorized -> loginFailed = true
+                else -> throw Exception()
+            }
         }
     }
-
 
     div {
         className = ClassName("page-container")
@@ -88,7 +98,6 @@ val loginPage = FC<LoginPageProps> {
                     }
                 }
             }
-
             div {
                 css {
                     marginTop = 32.px
@@ -99,6 +108,7 @@ val loginPage = FC<LoginPageProps> {
                     +"Sign In"
                 }
             }
+            if (loginFailed) +"Login Failed!"
         }
     }
 }

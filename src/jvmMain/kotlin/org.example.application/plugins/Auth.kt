@@ -11,11 +11,8 @@ fun Application.installAuth(repo: UserRepo) {
     install(Authentication) {
         session<Session>("auth-session") {
             validate { session ->
-                if (repo.validateUserSession(session.userId, session.sessionKey)) {
-                    session
-                } else {
-                    null
-                }
+                if (repo.validateUserSession(session.userId, session.sessionKey)) session
+                else null
             }
             challenge {
                 call.respondRedirect("/app/login")
@@ -26,6 +23,7 @@ fun Application.installAuth(repo: UserRepo) {
         cookie<Session>("user_session") {
             cookie.path = "/"
             cookie.maxAgeInSeconds = 60
+            cookie.extensions["SameSite"] = "lax"
         }
     }
 }
